@@ -1,0 +1,4 @@
+minsalsifda:
+    resource: "@MinsalsifdaBundle/Resources/config/routing.yml"
+    prefix:   /
+

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="SifdaRuta" table="sifda_ruta">
+    <indexes>
+      <index name="tiene_fk" columns="id_tipo_servicio"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="descripcion" type="string" column="descripcion" length="50" nullable="false"/>
+    <field name="tipo" type="string" column="tipo" length="30" nullable="false"/>
+    <many-to-one field="idTipoServicio" target-entity="SifdaTipoServicio">
+      <join-columns>
+        <join-column name="id_tipo_servicio" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

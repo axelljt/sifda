@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="SifdaRutaCicloVida" table="sifda_ruta_ciclo_vida">
+    <indexes>
+      <index name="contiene_fk" columns="id_ruta"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="descripcion" type="string" column="descripcion" length="100" nullable="false"/>
+    <field name="ref1" type="string" column="ref1" length="20" nullable="false"/>
+    <field name="jerarquia" type="integer" column="jerarquia" nullable="false"/>
+    <field name="ignorarSig" type="integer" column="ignorar_sig" nullable="false"/>
+    <field name="peso" type="integer" column="peso" nullable="false"/>
+    <many-to-one field="idRuta" target-entity="SifdaRuta">
+      <join-columns>
+        <join-column name="id_ruta" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>
