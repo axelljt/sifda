@@ -1,9 +1,9 @@
-{% extends '::base.html.twig' %}
+{% extends 'MinsalsifdaBundle::layout.html.twig' %}
 
 {% block body -%}
     <h1>SifdaSolicitudServicio list</h1>
     <h2>Otra prueba commit en el repositorio de Sifda</h2>
-    <table class="records_list">
+    <table class="table table-bordered table-hover table-condensed">
         <thead>
             <tr>
                 <th>Id</th>
@@ -39,7 +39,8 @@
         <li>
             <a href="{{ path('sifda_solicitudservicio_new') }}">
                 Create a new entry
-            </a>
+            </a>                
+            <button class="btn btn-primary" type="button">Button Test</button>
         </li>
     </ul>
     {% endblock %}
