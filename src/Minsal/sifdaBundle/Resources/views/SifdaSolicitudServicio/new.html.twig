@@ -1,5 +1,17 @@
 {% extends 'MinsalsifdaBundle::layout.html.twig' %}
 
+{% block stylesheets %}
+        {{parent()}}
+      {#<link href="{{ asset('bundles/minsalsifda/css/style.css') }}" type="text/css" rel="stylesheet" />#}
+       {#<img src="{{ asset('bundles/minsalsolicitante/images/calendar.gif') }}" alt="" />#}
+{% endblock %}
+
+{% block javascripts %}
+    {{parent()}}
+    <script type="text/javascript" src="{{ asset('bundles/minsalsifda/js/Calendar.js') }}" ></script>
+{% endblock %}
+
+
 {% block body -%}
     <h1>SifdaSolicitudServicio creation</h1>
 
