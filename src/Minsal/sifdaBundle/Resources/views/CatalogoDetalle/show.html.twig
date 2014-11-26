@@ -1,9 +1,11 @@
+{#{% extends '::base.html.twig' %}#}
 {% extends 'MinsalsifdaBundle::layout.html.twig' %}
 
-{% block contenido_in  %}
-    <h1>SifdaSolicitudServicio</h1>
 
-    <table class="record_properties">
+{% block body -%}
+    <h1>CatalogoDetalle</h1>
+
+    <table class="table table-bordered table-hover table-condensed">
         <tbody>
             <tr>
                 <th>Id</th>
@@ -14,24 +16,24 @@
                 <td>{{ entity.descripcion }}</td>
             </tr>
             <tr>
-                <th>Fecharecepcion</th>
-                <td>{{ entity.fechaRecepcion|date('Y-m-d H:i:s') }}</td>
+                <th>Ref1</th>
+                <td>{{ entity.ref1 }}</td>
             </tr>
             <tr>
-                <th>Fecharequiere</th>
-                <td>{{ entity.fechaRequiere|date('Y-m-d H:i:s') }}</td>
+                <th>Estatus</th>
+                <td>{{ entity.estatus }}</td>
             </tr>
         </tbody>
     </table>
 
         <ul class="record_actions">
     <li>
-        <a href="{{ path('sifda_solicitudservicio') }}">
+        <a href="{{ path('sifda_catalogodetalle') }}">
             Back to the list
         </a>
     </li>
     <li>
-        <a href="{{ path('sifda_solicitudservicio_edit', { 'id': entity.id }) }}">
+        <a href="{{ path('sifda_catalogodetalle_edit', { 'id': entity.id }) }}">
             Edit
         </a>
     </li>
