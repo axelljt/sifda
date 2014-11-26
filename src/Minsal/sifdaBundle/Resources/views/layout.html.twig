@@ -8,6 +8,7 @@
    {% endblock %}
    <title>{% block title %}:: Sifda ::{% endblock %}</title>
    {% block cssDefault %}
+    <link href="{{ asset('bundles/minsalsifda/css/estilos.css') }}" rel="stylesheet" media="all">
     <link href="{{ asset('bundles/minsalsifda/css/bootstrap.css') }}" rel="stylesheet" media="all">
     <link href="{{ asset('bundles/minsalsifda/css/bootstrap-responsive.css') }}" rel="stylesheet" media="all">
     <link href="{{ asset('bundles/minsalsifda/css/styles.css') }}" rel="stylesheet" media="all">
@@ -42,21 +43,21 @@
 <body>
 {% block body %}
 <div class="span12">
-{% block menu %}
-
+{% block menu %}  
+    {% include "MinsalsifdaBundle:Menu:menu.html.twig" %}
 {% endblock %}
 </div>
  {# BLOCK CONTENIDO#}        
  <div class="container-fluid">
  <div class="row-fluid">
  {% block bodycontenido %}     
-    <div class="span3 offset1">
+   {# <div class="span3 offset1">
     {% block sidebar %}
         
     {% endblock %}
     </div> 
-    
-    <div class="span7">
+    #}
+    <div class="span10 offset1">
     {#MENSAJES DE ERROR#}
      <div class="block-app">
      {% block content_error %} 
@@ -66,7 +67,8 @@
          <strong>Nota: </strong> Campos requeridos (*).
      </div>
      {% endblock %}
-     {% block contenido_in %}{% endblock %}
+     {% block contenido_in %}
+     {% endblock %}
      {% endblock %}
      </div>
      </div>
