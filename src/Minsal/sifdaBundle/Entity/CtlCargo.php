@@ -28,6 +28,10 @@ class CtlCargo
      * @ORM\Column(name="nombre", type="string", length=50, nullable=false)
      */
     private $nombre;
+    
+    public function __toString() {
+        return $this->nombre;
+    }
 
 
 

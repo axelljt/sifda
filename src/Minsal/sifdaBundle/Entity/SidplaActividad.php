@@ -90,6 +90,10 @@ class SidplaActividad
      * })
      */
     private $idLineaEstrategica;
+    
+    public function __toString() {
+        return $this->descripcion;
+    }
 
 
 

@@ -59,6 +59,10 @@ class SidplaLineaEstrategica
      * })
      */
     private $idDependenciaEstablecimiento;
+    
+    public function __toString() {
+        return $this->descripcion;
+    }
 
 
 

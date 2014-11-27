@@ -28,6 +28,10 @@ class CtlEstablecimiento
      * @ORM\Column(name="nombre", type="string", length=150, nullable=false)
      */
     private $nombre;
+    
+    public function __toString() {
+        return $this->nombre;
+    }
 
 
 
