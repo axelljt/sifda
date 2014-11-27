@@ -2,8 +2,7 @@ minsalsifda_homepage:
     path:     /hello/{name}
     defaults: { _controller: MinsalsifdaBundle:Default:index }
 
-
-Minsalsifda:
-    resource: "@MinsalsifdaBundle/Controller"
+Minsalsifda_ctltipodependencia:
+    resource: "@MinsalsifdaBundle/Controller/"
     prefix: /
     type: annotation
