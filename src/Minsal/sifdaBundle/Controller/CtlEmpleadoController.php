@@ -13,7 +13,7 @@ use Minsal\sifdaBundle\Form\CtlEmpleadoType;
 /**
  * CtlEmpleado controller.
  *
- * @Route("/ctlempleado")
+ * @Route("/sifda/ctlempleado")
  */
 class CtlEmpleadoController extends Controller
 {
