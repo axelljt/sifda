@@ -3,6 +3,8 @@
 namespace Minsal\sifdaBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -35,6 +37,28 @@ class SifdaSolicitudServicioController extends Controller
             'entities' => $entities,
         );
     }
+    
+    /**
+    * Ajax utilizado para buscar rango de fechas
+    *  
+    * @Route("/buscarSolicitudes", name="sifda_solicitudservicio_buscar_solicitudes")
+    */
+    public function buscarSolicitudesAction()
+    {
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+        if($isAjax){
+             $fechaInicio = $this->get('request')->request->get('fechaInicio');
+             $fechaFin = $this->get('request')->request->get('fechaFin');
+             $em = $this->getDoctrine()->getManager();
+             $solicitudes = $em->getRepository('MinsalsifdaBundle:SifdaSolicitudServicio')->FechaSolicitud($fechaInicio, $fechaFin);
+             $mensaje = $this->renderView('MinsalsifdaBundle:SifdaSolicitudServicio:solicitudesShow.html.twig' , array('solicitudes' =>$solicitudes));
+             $response = new JsonResponse();
+             return $response->setData($mensaje);
+        }else
+            {   return new Response('0');   }       
+    }    
+    
+    
     /**
      * Creates a new SifdaSolicitudServicio entity.
      *

@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * SifdaSolicitudServicio
  *
  * @ORM\Table(name="sifda_solicitud_servicio", indexes={@ORM\Index(name="define_fk", columns={"id_tipo_servicio"}), @ORM\Index(name="define_medio_fk", columns={"id_medio_solicita"}), @ORM\Index(name="establece_estado_fk", columns={"id_estado"}), @ORM\Index(name="ingresa_fk", columns={"user_id"}), @ORM\Index(name="solicita_fk", columns={"id_dependencia_establecimiento"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Minsal\sifdaBundle\Repository\SifdaSolicitudServicioRepository")
  */
 class SifdaSolicitudServicio
 {

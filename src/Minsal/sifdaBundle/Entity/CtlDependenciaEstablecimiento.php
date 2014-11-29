@@ -195,6 +195,6 @@ class CtlDependenciaEstablecimiento
     
    public function __toString() 
    {
-        return $this->abreviatura;
+        return (string)$this->abreviatura;
     }
 }

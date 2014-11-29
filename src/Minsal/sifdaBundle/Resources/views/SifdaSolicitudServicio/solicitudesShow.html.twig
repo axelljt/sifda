@@ -1,0 +1,23 @@
+{% spaceless %}
+<div id="school-previous">
+    <div class="bs-example">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Descripcion</th>
+                    <th>Fecha de recepcion</th>
+                    <th>Fecha requerida</th>
+                </tr>
+            </thead>
+            <tbody>{%for s in solicitudes%}
+                <tr>
+                    <td>{{s.descripcion}}</td>
+                    <td>{{s.fechaRecepcion|date('Y-m-d H:i:s')}}</td>
+                    <td>{{s.fechaRequiere|date('Y-m-d H:i:s')}}</td>
+                </tr>
+                   {%endfor%}
+            </tbody>
+        </table>
+    </div>
+</div>        
+{% endspaceless %}

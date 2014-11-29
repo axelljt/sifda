@@ -2,7 +2,30 @@
 {% block contenido_in  %}
     <h1>SifdaSolicitudServicio list</h1>
     <h2>Otra prueba commit en el repositorio de Sifda</h2>
-    <table class="table table-bordered table-hover table-condensed">
+    <div id="seleccion">
+        <div class="row-fluid">
+            <div class="span11 offset1">
+                <input type="radio" name="consulta" id="todos" value="todos" checked>Todos<br>
+                <input type="radio" name="consulta" id="especifico" value="especifico">Especifico
+                <div>
+                    <table id="fechas">
+                        <tr>
+                            <td><label>Fecha Inicio: </label></td><td><input type="text" id="fechaInicio" value=""></td>
+                            <td><label>Fecha Fin: </label></td><td><input type="text" id="fechaFin" value=""></td>
+                            <td><input type="submit" class="btn btn-primary" id="b1" onclick="mostrarvalores()" value="Buscar" name="Buscar"></td>
+                        </tr>
+                            
+                    </table>    
+                    
+                    
+                </div>
+                
+            </div>
+        </div>    
+    </div>
+    <div id="rangoTabla">     
+    </div>
+    <table id="tabla" class="table table-bordered table-hover table-condensed">
         <thead>
             <tr>
                 <th>Id</th>
@@ -39,7 +62,90 @@
             <a href="{{ path('sifda_solicitudservicio_new') }}">
                 Create a new entry
             </a>                
-            <button class="btn btn-primary" type="button">Button Test</button>
         </li>
     </ul>
     {% endblock %}
+
+{% block javascripts_step %}
+    {{ parent() }}
+    <script>
+    $(document).ready(function(){
+
+        $('#fechas').hide("slow");
+        //alert($('#todos').val());
+        $('#todos').click(function(){
+            $('#fechas').hide("slow");
+            $('#tabla').show("slow");
+        });
+        
+        $('#especifico').click(function(){ 
+        $('#fechas').show("slow");    
+        $('#tabla').hide("slow");          
+        });
+        
+        $("#b1").click(function(){
+            var fi = $("#fechaInicio").val();
+            var ff = $("#fechaFin").val();
+            $.post(
+            '{{path('sifda_solicitudservicio_buscar_solicitudes')}}', 
+              { 
+                fechaInicio:$("#fechaInicio").val(),
+                fechaFin   :$("#fechaFin").val()
+              }
+              , function( data ) {
+                console.log( data );
+                    $("#rangoTabla").html(data);
+                
+             }, "json");
+            
+        });
+    });
+    
+    
+    
+    $.datepicker.regional['es'] = {
+			 closeText: 'Cerrar',
+			 prevText: '<Ant',
+			 nextText: 'Sig>',
+			 currentText: 'Hoy',
+			 monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+			 monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+			 dayNames: ['Domingo', 'Lunes', 'Martes', 'Mi�rcoles', 'Jueves', 'Viernes', 'S�bado'],
+			 dayNamesShort: ['Dom','Lun','Mar','Mi�','Juv','Vie','S�b'],
+			 dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','S�'],
+			 weekHeader: 'Sm',
+			 showButtonPanel:false,
+			 showAnim:'show',
+                         changeMonth: true,
+			 changeYear: true,
+//                         minDate: new Date(1980, 11, 1), 
+//                         maxDate: "+0D",
+                         dateFormat: 'yy-mm-dd',
+			 firstDay: 1,
+			 isRTL: false,
+			 showMonthAfterYear: false,
+			 yearSuffix: ''
+			 
+			 };
+			$.datepicker.setDefaults($.datepicker.regional['es']);
+			$(function() {
+				$( "#fechaInicio" ).datepicker(
+					
+					);
+                                
+                                $( "#fechaFin" ).datepicker(
+					
+					);
+				}); 
+    
+    function mostrarvalores(){ 
+              var fi = $("#fechaInicio").val();
+        
+             var ff = $("#fechaFin").val();
+             //alert(fi);   
+             //alert(ff);
+    }
+    
+    
+    </script>
+    {% endblock%}
