@@ -15,7 +15,7 @@ class SifdaSolicitudServicioType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('descripcion')
+            ->add('descripcion','text', array('label'=>'Descripcion *'))
 //            ->add('fechaRecepcion')
             ->add('fechaRecepcion','date',array('input'=>'datetime','widget'=>'single_text',
                   'format'=>'yy-MM-dd','attr'=>array('class'=>'date')))

@@ -1,27 +1,77 @@
 {% extends 'MinsalsifdaBundle::layout.html.twig' %}
 
-{% block stylesheets %}
-        {{parent()}}
-      {#<link href="{{ asset('bundles/minsalsifda/css/style.css') }}" type="text/css" rel="stylesheet" />#}
-       {#<img src="{{ asset('bundles/minsalsolicitante/images/calendar.gif') }}" alt="" />#}
+{% block contenido_in -%}
+
+<div class="row-fluid">
+    <center><h3>Crear una solicitud de servicio</h3></center>
+    <div class="span12">
+        <div class="row-fluid">
+            <div class="span4 offset2">
+                 {{form_row(form.descripcion)}}
+                 {{form_row(form.fechaRequiere)}}
+                 {{form_row(form.fechaRecepcion)}}
+                 {{form_row(form.idEstado)}}
+                 
+            </div>          
+            <div class="span5 offset1">
+                 {{form_row(form.idMedioSolicita)}}
+                 {{form_row(form.idDependenciaEstablecimiento)}}
+                 {{form_row(form.user)}}
+                 {{form_row(form.idTipoServicio)}}
+            </div>
+        </div>
+        <center>
+            <table id="botones">
+            <tr> 
+                <td>{{form_row(form.submit,{'attr':{'class':'btn btn-primary'}})}}</td>
+                <td><a href="{{ path('sifda_solicitudservicio')}}" class="btn">Regresar</a></td>
+            </tr>    
+            </table>
+        </center>    
+    </div>
+</div>
+       
+
 {% endblock %}
 
-{% block javascripts %}
-    {{parent()}}
-    <script type="text/javascript" src="{{ asset('bundles/minsalsifda/js/Calendar.js') }}" ></script>
-{% endblock %}
-
-
-{% block body -%}
-    <h1>SifdaSolicitudServicio creation</h1>
-
-    {{ form(form) }}
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('sifda_solicitudservicio') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
-{% endblock %}
+{% block javascripts_step %}
+    {{ parent() }}
+    <script>
+   
+        $.datepicker.regional['es'] = {
+			 closeText: 'Cerrar',
+			 prevText: '<Ant',
+			 nextText: 'Sig>',
+			 currentText: 'Hoy',
+			 monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+			 monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+			 dayNames: ['Domingo', 'Lunes', 'Martes', 'Mi�rcoles', 'Jueves', 'Viernes', 'S�bado'],
+			 dayNamesShort: ['Dom','Lun','Mar','Mi�','Juv','Vie','S�b'],
+			 dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','S�'],
+			 weekHeader: 'Sm',
+			 showButtonPanel:false,
+			 showAnim:'show',
+                         changeMonth: true,
+			 changeYear: true,
+//                         minDate: new Date(1980, 11, 1), 
+//                         maxDate: "+0D",
+                         dateFormat: 'yy-mm-dd',
+			 firstDay: 1,
+			 isRTL: false,
+			 showMonthAfterYear: false,
+			 yearSuffix: ''
+			 
+			 };
+			$.datepicker.setDefaults($.datepicker.regional['es']);
+			$(function() {
+				$( "#minsal_sifdabundle_sifdasolicitudservicio_fechaRecepcion" ).datepicker(
+					
+					);
+                                
+                                $( "#minsal_sifdabundle_sifdasolicitudservicio_fechaRequiere" ).datepicker(
+					
+					);
+				});
+     
+    </script>
+    {% endblock%}

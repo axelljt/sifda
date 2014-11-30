@@ -43,9 +43,13 @@
 <body>
 {% block body %}
 <div class="span12">
-{% block menu %}  
-    {% include "MinsalsifdaBundle:Menu:menu.html.twig" %}
-{% endblock %}
+    {% block banner %}
+    <center><img src="{{ asset('bundles/minsalsifda/images/banner.png') }}"/></center>
+              
+    {% endblock %}    
+    {% block menu %}  
+        {% include "MinsalsifdaBundle:Menu:menu.html.twig" %}
+    {% endblock %}
 </div>
  {# BLOCK CONTENIDO#}        
  <div class="container-fluid">

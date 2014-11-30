@@ -1,30 +1,32 @@
 {% extends 'MinsalsifdaBundle::layout.html.twig' %}
-{% block contenido_in  %}
-    <h1>SifdaSolicitudServicio list</h1>
-    <h2>Otra prueba commit en el repositorio de Sifda</h2>
+{% block contenido_in %}
+    <center><h3>Mostrar solicitudes ingresadas</h3></center>
     <div id="seleccion">
         <div class="row-fluid">
             <div class="span11 offset1">
-                <input type="radio" name="consulta" id="todos" value="todos" checked>Todos<br>
-                <input type="radio" name="consulta" id="especifico" value="especifico">Especifico
+            <table>
+                <tr>
+                    <td>
+                    <input type="radio" name="consulta" id="todos" value="todos" checked>Todos<br>
+                    <input type="radio" name="consulta" id="especifico" value="especifico">Especifico
+                    </td>
+                    <td><div id="rangoTabla"></div></td>
+                </tr>
+            </table>    
                 <div>
                     <table id="fechas">
                         <tr>
                             <td><label>Fecha Inicio: </label></td><td><input type="text" id="fechaInicio" value=""></td>
                             <td><label>Fecha Fin: </label></td><td><input type="text" id="fechaFin" value=""></td>
                             <td><input type="submit" class="btn btn-primary" id="b1" onclick="mostrarvalores()" value="Buscar" name="Buscar"></td>
-                        </tr>
-                            
+                        </tr>    
                     </table>    
-                    
-                    
-                </div>
-                
+                </div>              
             </div>
         </div>    
     </div>
-    <div id="rangoTabla">     
-    </div>
+        
+    <br>
     <table id="tabla" class="table table-bordered table-hover table-condensed">
         <thead>
             <tr>
@@ -56,14 +58,6 @@
         {% endfor %}
         </tbody>
     </table>
-
-        <ul>
-        <li>
-            <a href="{{ path('sifda_solicitudservicio_new') }}">
-                Create a new entry
-            </a>                
-        </li>
-    </ul>
     {% endblock %}
 
 {% block javascripts_step %}

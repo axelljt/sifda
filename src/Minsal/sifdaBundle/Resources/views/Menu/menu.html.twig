@@ -3,10 +3,20 @@
     <div class=" navbar-inner">
         <div class="container">
             <ul class="nav">
-		{#<li><a href="#">Link</a> <i class="icon-home icon-white"></i> SIFDA</li>#}
-		<li><a href="#" tabindex="-1">OPCION 1</a></li>
-                <li><a href="#" tabindex="-1">OPCION 2</a></li>
-		<li><a href="#" tabindex="-1">OPCION 3</a></li>       
+                    <div class="btn-group">
+                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                    Gestionar solicitud
+                    <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a tabindex="-1" href={{path('sifda_solicitudservicio')}}>Mostrar solicitud</a></li>
+                        <li><a tabindex="-2" href={{path('sifda_solicitudservicio_new')}}>Crear solicitud</a></li>
+                        
+                         <li><a tabindex="-1" href="#">Another action</a></li>
+                         <li><a tabindex="-1" href="#">Something else here</a></li>
+                    </ul>
+                    </div>
+     
             </ul>
 	</div>
     </div>
