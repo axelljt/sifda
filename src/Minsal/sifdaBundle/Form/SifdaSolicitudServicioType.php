@@ -26,7 +26,7 @@ class SifdaSolicitudServicioType extends AbstractType
             ->add('idMedioSolicita')
             ->add('idDependenciaEstablecimiento')
             ->add('user')
-            ->add('idTipoServicio')
+            ->add('idTipoServicio')   
         ;
     }
     

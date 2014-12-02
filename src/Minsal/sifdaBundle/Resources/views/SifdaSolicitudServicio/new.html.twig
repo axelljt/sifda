@@ -1,7 +1,8 @@
 {% extends 'MinsalsifdaBundle::layout.html.twig' %}
 
 {% block contenido_in -%}
-
+{{form_start(form)}}
+{{form_errors(form)}}
 <div class="row-fluid">
     <center><h3>Crear una solicitud de servicio</h3></center>
     <div class="span12">
@@ -10,8 +11,7 @@
                  {{form_row(form.descripcion)}}
                  {{form_row(form.fechaRequiere)}}
                  {{form_row(form.fechaRecepcion)}}
-                 {{form_row(form.idEstado)}}
-                 
+                 {{form_row(form.idEstado)}}                
             </div>          
             <div class="span5 offset1">
                  {{form_row(form.idMedioSolicita)}}
@@ -23,14 +23,15 @@
         <center>
             <table id="botones">
             <tr> 
-                <td>{{form_row(form.submit,{'attr':{'class':'btn btn-primary'}})}}</td>
+                
+                <td>{{form_row(form.submit,{'attr':{'class':'btn btn-primary'}})}}</td> 
                 <td><a href="{{ path('sifda_solicitudservicio')}}" class="btn">Regresar</a></td>
             </tr>    
             </table>
         </center>    
     </div>
 </div>
-       
+{{form_end(form)}}       
 
 {% endblock %}
 
