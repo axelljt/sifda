@@ -288,4 +288,14 @@ class SifdaSolicitudServicio
     {
         return $this->idTipoServicio;
     }
+    
+    /**
+     * Get idTipoServicio
+     *
+     * @return \Minsal\sifdaBundle\Entity\SifdaTipoServicio 
+     */
+    public function __toString()
+    {
+        return $this->id.' - '.$this->descripcion;
+    }
 }
