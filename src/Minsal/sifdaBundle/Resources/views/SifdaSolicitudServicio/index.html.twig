@@ -10,7 +10,7 @@
                     <input type="radio" name="consulta" id="todos" value="todos" checked>Todos<br>
                     <input type="radio" name="consulta" id="especifico" value="especifico">Especifico
                     </td>
-                    <td><div id="rangoTabla"></div></td>
+                    <td></td>
                 </tr>
             </table>    
                 <div>
@@ -21,6 +21,7 @@
                             <td><input type="submit" class="btn btn-primary" id="b1" onclick="mostrarvalores()" value="Buscar" name="Buscar"></td>
                         </tr>    
                     </table>    
+                    <div id="rangoTabla"></div>
                 </div>              
             </div>
         </div>    
@@ -70,6 +71,7 @@
         $('#todos').click(function(){
             $('#fechas').hide("slow");
             $('#tabla').show("slow");
+            $('#rangoTabla').hide("slow");
         });
         
         $('#especifico').click(function(){ 
