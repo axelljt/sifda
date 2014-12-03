@@ -17,8 +17,8 @@ class SifdaSolicitudServicioType extends AbstractType
         $builder
             ->add('descripcion','text', array('label'=>'Descripcion *'))
 //            ->add('fechaRecepcion')
-            ->add('fechaRecepcion','date',array('input'=>'datetime','widget'=>'single_text',
-                  'format'=>'yy-MM-dd','attr'=>array('class'=>'date')))
+            /*->add('fechaRecepcion','date',array('input'=>'datetime','widget'=>'single_text',
+                  'format'=>'yy-MM-dd','attr'=>array('class'=>'date')))*/
 //            ->add('fechaRequiere')
             ->add('fechaRequiere','date',array('input'=>'datetime','widget'=>'single_text',
                   'format'=>'yy-MM-dd','attr'=>array('class'=>'date')))        

@@ -70,6 +70,8 @@ class SifdaSolicitudServicioController extends Controller
     {
         $entity = new SifdaSolicitudServicio();
         $form = $this->createCreateForm($entity);
+        
+        $entity->setFechaRecepcion(new \DateTime());
         $form->handleRequest($request);
 
         if ($form->isValid()) {
