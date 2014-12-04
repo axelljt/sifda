@@ -77,7 +77,9 @@ class SifdaSolicitudServicioController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('sifda_solicitudservicio_show', array('id' => $entity->getId())));
+//            return $this->redirect($this->generateUrl('sifda_solicitudservicio_show', array('id' => $entity->getId())));
+              return $this->redirect($this->generateUrl('sifda_solicitudservicio', array('id' => $entity->getId()))); 
+            
         }
 
         return array(
@@ -217,7 +219,9 @@ class SifdaSolicitudServicioController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('sifda_solicitudservicio_edit', array('id' => $id)));
+//            return $this->redirect($this->generateUrl('sifda_solicitudservicio_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('sifda_solicitudservicio', array('id' => $id)));
+            
         }
 
         return array(
