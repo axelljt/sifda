@@ -151,6 +151,34 @@ class SifdaSolicitudServicioController extends Controller
             'delete_form' => $deleteForm->createView(),
         );
     }
+    
+    
+    /**
+     * Controlador para la busqueda de Estados.
+     *
+     * @Route("/showestado/{id}", name="sifda_solicitudservicio_show_estado")
+     * @Method("GET")
+     * @Template()
+     */
+    public function showEstadoAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('MinsalsifdaBundle:SifdaSolicitudServicio')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find SifdaSolicitudServicio entity.');
+        }
+
+        $deleteForm = $this->createDeleteForm($id);
+
+        return array(
+            'entity'      => $entity,
+            'delete_form' => $deleteForm->createView(),
+        );
+    }
+    
+    
 
     /**
      * Displays a form to edit an existing SifdaSolicitudServicio entity.
@@ -247,6 +275,7 @@ class SifdaSolicitudServicioController extends Controller
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('MinsalsifdaBundle:SifdaSolicitudServicio')->find($id);
 
+            
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find SifdaSolicitudServicio entity.');
             }
@@ -257,6 +286,34 @@ class SifdaSolicitudServicioController extends Controller
 
         return $this->redirect($this->generateUrl('sifda_solicitudservicio'));
     }
+    
+    
+    /**
+     * Deletes a SifdaSolicitudServicio entity.
+     *
+     * @Route("/delete/{id}", name="sifda_solicitudservicio_delete2")
+      * @Method("GET")
+     */
+    
+    
+    public function delete2Action($id){
+        
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('MinsalsifdaBundle:SifdaSolicitudServicio')->find($id);
+        
+
+        
+        if (!$entity) {
+                throw $this->createNotFoundException('Unable to find SifdaSolicitudServicio entity.');
+            }
+
+            $em->remove($entity);
+            $em->flush();
+        
+            return $this->redirect($this->generateUrl('sifda_solicitudservicio'));
+    }
+    
+    
 
     /**
      * Creates a form to delete a SifdaSolicitudServicio entity by id.
