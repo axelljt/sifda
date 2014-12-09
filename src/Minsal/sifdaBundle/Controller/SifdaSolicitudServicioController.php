@@ -68,14 +68,20 @@ class SifdaSolicitudServicioController extends Controller
      */
     public function createAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
         $entity = new SifdaSolicitudServicio();
         $form = $this->createCreateForm($entity);
         
+        $idEstado = $em->getRepository('MinsalsifdaBundle:CatalogoDetalle')->findOneBy(array('descripcion'=>'Ingresado'));
+        $idMedioSolicita = $em->getRepository('MinsalsifdaBundle:CatalogoDetalle')->findOneBy(array('descripcion'=>'Sistema'));
+        $idUser = $em->getRepository('MinsalsifdaBundle:FosUserUser')->findOneBy(array('username'=>'anthony'));
+        $entity->setIdEstado($idEstado);
+        $entity->setIdMedioSolicita($idMedioSolicita);
+        $entity->setUser($idUser);
         $entity->setFechaRecepcion(new \DateTime());
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
 

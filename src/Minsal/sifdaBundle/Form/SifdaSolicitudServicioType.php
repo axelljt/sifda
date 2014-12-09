@@ -22,10 +22,10 @@ class SifdaSolicitudServicioType extends AbstractType
 //            ->add('fechaRequiere')
             ->add('fechaRequiere','date',array('input'=>'datetime','widget'=>'single_text',
                   'format'=>'yy-MM-dd','attr'=>array('class'=>'date')))        
-            ->add('idEstado')
-            ->add('idMedioSolicita')
+           // ->add('idEstado')
+           // ->add('idMedioSolicita')
             ->add('idDependenciaEstablecimiento')
-            ->add('user')
+            //->add('user')
             ->add('idTipoServicio')   
         ;
     }
