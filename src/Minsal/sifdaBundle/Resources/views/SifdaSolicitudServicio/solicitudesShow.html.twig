@@ -17,7 +17,7 @@
                     <td>{{loop.index}}</td>
                     <td>{{s.descripcion}}</td>
                     <td>{{s.fechaRecepcion|date('Y-m-d H:i:s')}}</td>
-                    <td>{{s.fechaRequiere|date('Y-m-d H:i:s')}}</td>
+                    <td>{{s.fechaRequiere|date('Y-m-d')}}</td>
                     
                     <td><a href="{{ path('sifda_solicitudservicio_show_estado', { 'id': s.id }) }}">show</a> </td>
                 </tr>

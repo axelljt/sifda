@@ -27,11 +27,15 @@
         </div>    
     </div>
         
+    <div id="dialog">
+        
+    </div>
+    
     <br>
     <table id="tabla" class="table table-bordered table-hover table-condensed">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>N°</th>
                 <th>Descripcion</th>
                 <th>Fecharecepcion</th>
                 <th>Fecharequiere</th>
@@ -41,7 +45,8 @@
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('sifda_solicitudservicio_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                {#<td><a href="{{ path('sifda_solicitudservicio_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>#} 
+                <td>{{ loop.index }}</td>
                 <td>{{ entity.descripcion }}</td>
                 <td>{% if entity.fechaRecepcion %}{{ entity.fechaRecepcion|date('d-m-Y H:i:s') }}{% endif %}</td>
                 <td>{% if entity.fechaRequiere %}{{ entity.fechaRequiere|date('d-m-Y') }}{% endif %}</td>
@@ -51,10 +56,10 @@
                     <li>
                         {#<a href="{{ path('sifda_solicitudservicio_show', { 'id': entity.id }) }}">show</a>#}
                         
-                        <a href="{{ path('sifda_solicitudservicio_delete2', { 'id': entity.id }) }}">delete</a>
+                        <a  href="{{ path('sifda_solicitudservicio_delete2', { 'id': entity.id }) }}">delete</a>
                     </li>
                     <li>
-                        <a href="{{ path('sifda_solicitudservicio_edit', { 'id': entity.id }) }}">edit</a>
+                        <a href="{{ path('sifda_solicitudservicio_edit', { 'id': entity.id }) }}" onclick="alert('hola')">edit</a>
                     </li>
                 </ul>
                 </td>
@@ -84,7 +89,25 @@
         $('#tabla').hide("slow");          
         });
         
+        
+     
+        
+        
         $("#b1").click(function(){
+           
+        //cuadro dialogo
+           
+        //  $('#dialog').dialog();  
+        //$('#dialog').attr('title','saved').text('Los Datos se guardaron Exitosamente').dialog();
+        
+          {#$('#dialog').attr('title','saved').text('Los Datos se guardaron Exitosamente').dialog({
+              
+              buttons: {'Ok': function (){
+                      $(this).dialog('close');
+              }},draggable:false,resizable:false,show:'fade',modal:true
+          }); #}
+        
+        
             var fi = $("#fechaInicio").val();
             var ff = $("#fechaFin").val();
             $.post(
@@ -154,6 +177,8 @@
              //alert(fi);   
              //alert(ff);
     }
+    
+    
     
     
     </script>

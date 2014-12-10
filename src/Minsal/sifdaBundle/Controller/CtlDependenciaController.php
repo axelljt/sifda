@@ -3,6 +3,8 @@
 namespace Minsal\sifdaBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -98,6 +100,25 @@ class CtlDependenciaController extends Controller
             'form'   => $form->createView(),
         );
     }
+    
+        /**
+    * Ajax utilizado para buscar rango de fechas
+    *  
+    * @Route("/listarDependencia", name="sifda_ctldependencia_listar_dependencia")
+    */
+    public function listarDependenciaAction()
+    {
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+        if($isAjax){
+             $idTipoDependencia = $this->get('request')->request->get('idTipoDependencia');
+             $em = $this->getDoctrine()->getManager();
+             $dependencias = $em->getRepository('MinsalsifdaBundle:CtlDependencia')->findBy(array('idTipoDependencia'=>$idTipoDependencia));
+             $mensaje = $this->renderView('MinsalsifdaBundle:CtlDependencia:dependenciasShow.html.twig' , array('dependencias' =>$dependencias));
+             $response = new JsonResponse();
+             return $response->setData($mensaje);
+        }else
+            {   return new Response('0');   }       
+    } 
 
     /**
      * Finds and displays a CtlDependencia entity.

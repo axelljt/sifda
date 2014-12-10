@@ -15,8 +15,20 @@ class CtlDependenciaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombre')
-            ->add('idTipoDependencia')
+            ->add('idTipoDependencia','entity',
+                  array('label'=>'Tipo de dependencia *',
+                        'empty_value'=>'Seleccione un tipo',
+                        'class'=>'MinsalsifdaBundle:CtlTipoDependencia',
+                        'property'=>'nombre', 'required'=>true,
+                      )
+                  )
+            ->add('nombre','choice',
+                  array('label'=>'Dependencia *',
+                        'empty_value'=>'Seleccione una dependencia'
+                      )
+                  )    
+            //->add('nombre')
+            
         ;
     }
     

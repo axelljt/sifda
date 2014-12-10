@@ -1,16 +1,42 @@
 {% extends 'MinsalsifdaBundle::layoutSolicitante.html.twig' %}
 
 {% block contenido_in  %}
-    <h1>SifdaSolicitudServicio edit</h1>
-
-    {{ form(edit_form) }}
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('sifda_solicitudservicio') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+    {{form_start(edit_form)}}
+    {{form_errors(edit_form)}}
+    
+    <div class="row-fluid">
+        <center><h3>Editar solicitud de servicio</h3></center>
+        <div class="span12">
+            <div class="row-fluid">
+                <div class="span4 offset2">
+                    
+                    {{form_row(edit_form.descripcion)}}
+                    {{form_row(edit_form.fechaRequiere)}}
+                    {{form_row(edit_form.idEstado)}} 
+                    
+                </div>                   
+                <div class="span5 offset1">
+                    
+                    {{form_row(edit_form.idMedioSolicita)}}
+                    {{form_row(edit_form.idDependenciaEstablecimiento)}}
+                    {{form_row(edit_form.user)}}
+                    {{form_row(edit_form.idTipoServicio)}}
+                    
+                </div>
+            </div>           
+          
+            
+        <center>
+            
+            <table id="botones">
+                <tr>
+                    <td>{{form_row(edit_form.submit,{'attr':{'class':'btn btn-primary'}})}}</td>
+                    <td><a href="{{ path('sifda_solicitudservicio')}}" class="btn">Regresar</a></td>
+                </tr>  
+            </table>            
+        </center>
+            
+      </div> 
+   </div>
+    {{form_end(edit_form)}}    
 {% endblock %}
