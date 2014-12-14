@@ -348,4 +348,12 @@ class SifdaOrdenTrabajo
     {
         return $this->idSolicitudServicio;
     }
+    /**
+     * 
+     * @return type 
+     */
+    public function __toString()
+    {
+        return $this->id.' - '.$this->descripcion;
+    }
 }

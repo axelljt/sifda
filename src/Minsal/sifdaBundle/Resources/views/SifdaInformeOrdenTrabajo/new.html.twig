@@ -1,15 +1,25 @@
-{% extends '::base.html.twig' %}
+{% extends 'MinsalsifdaBundle::layoutTecnico.html.twig' %}
 
-{% block body -%}
-    <h1>SifdaInformeOrdenTrabajo creation</h1>
+{% block contenido_in -%}
+    {{form_start(form)}}
+{{form_errors(form)}}
+<div class="row-fluid">
+    <center><h3>Informe de Orden de Trabajo</h3></center>
+    <center><h3>{{orden}}</h3></center>
 
     {{ form(form) }}
+      
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('sifdainformeordentrabajo') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
+        
+            <center>
+            <table id="botones">
+            <tr> 
+                
+                <td>{{form_row(form.submit,{'attr':{'class':'btn btn-primary'}})}}</td> 
+                <td><a href="{{ path('sifda_ordentrabajo')}}" class="btn">Regresar</a></td>
+            </tr>    
+            </table>
+        </center>
+</div>
+{{form_end(form)}}
 {% endblock %}

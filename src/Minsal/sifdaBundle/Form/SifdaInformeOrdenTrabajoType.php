@@ -21,7 +21,7 @@ class SifdaInformeOrdenTrabajoType extends AbstractType
             ->add('terminado')
             ->add('idDependenciaEstablecimiento')
             ->add('idEmpleado')
-            ->add('idOrdenTrabajo')
+            ->add('idOrdenTrabajo')    
             ->add('idEtapa')
             ->add('idSubactividad')
         ;

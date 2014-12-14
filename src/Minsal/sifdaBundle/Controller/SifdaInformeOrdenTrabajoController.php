@@ -13,7 +13,7 @@ use Minsal\sifdaBundle\Form\SifdaInformeOrdenTrabajoType;
 /**
  * SifdaInformeOrdenTrabajo controller.
  *
- * @Route("/sifda/sifdainformeordentrabajo")
+ * @Route("/sifda/informeordentrabajo")
  */
 class SifdaInformeOrdenTrabajoController extends Controller
 {
@@ -84,18 +84,31 @@ class SifdaInformeOrdenTrabajoController extends Controller
     /**
      * Displays a form to create a new SifdaInformeOrdenTrabajo entity.
      *
-     * @Route("/new", name="sifdainformeordentrabajo_new")
+     * @Route("/{id}", name="sifdainformeordentrabajo_new")
      * @Method("GET")
      * @Template()
      */
-    public function newAction()
+    public function newAction($id)
     {
         $entity = new SifdaInformeOrdenTrabajo();
-        $form   = $this->createCreateForm($entity);
+        
+        if ($id != 0) {
+            $em = $this->getDoctrine()->getManager();
 
+            $orden = $em->getRepository('MinsalsifdaBundle:SifdaOrdenTrabajo')->find($id);
+
+            if (!$orden) {
+                throw $this->createNotFoundException('Unable to find SifdaInformeOrdenTrabajo entity.');
+            }
+            $entity->setIdOrdenTrabajo($orden);
+            
+        }
+        $form = $this->createCreateForm($entity);
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'orden' => $orden,
+            'form' => $form->createView(),
+            
         );
     }
 
