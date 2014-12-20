@@ -1,13 +1,13 @@
 {% extends 'MinsalsifdaBundle::layoutTecnico.html.twig' %}
 
-{% block body -%}
-    <h1>SifdaInformeOrdenTrabajo edit</h1>
+{% block contenido_in -%}
+    <center><h3>Editar Informe de Orden de Trabajo</h3></center>
 
     {{ form(edit_form) }}
 
         <ul class="record_actions">
     <li>
-        <a href="{{ path('sifdainformeordentrabajo') }}">
+        <a href="{{ path('sifdainformeordentrabajo', { 'idOrd': entity.idOrdenTrabajo.id }) }}">
             Back to the list
         </a>
     </li>

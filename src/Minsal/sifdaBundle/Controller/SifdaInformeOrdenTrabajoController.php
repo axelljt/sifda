@@ -21,15 +21,15 @@ class SifdaInformeOrdenTrabajoController extends Controller
     /**
      * Lists all SifdaInformeOrdenTrabajo entities.
      *
-     * @Route("/", name="sifdainformeordentrabajo")
+     * @Route("/lstInf/{idOrd}", name="sifdainformeordentrabajo")
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction($idOrd)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('MinsalsifdaBundle:SifdaInformeOrdenTrabajo')->findAll();
+        $entities = $em->getRepository('MinsalsifdaBundle:SifdaInformeOrdenTrabajo')->findBy(array('idOrdenTrabajo'=>$idOrd));
 
         return array(
             'entities' => $entities,
@@ -84,13 +84,14 @@ class SifdaInformeOrdenTrabajoController extends Controller
     /**
      * Displays a form to create a new SifdaInformeOrdenTrabajo entity.
      *
-     * @Route("/{id}", name="sifdainformeordentrabajo_new")
+     * @Route("/new/{id}", name="sifdainformeordentrabajo_new")
      * @Method("GET")
      * @Template()
      */
     public function newAction($id)
     {
         $entity = new SifdaInformeOrdenTrabajo();
+        $orden = null;
         
         if ($id != 0) {
             $em = $this->getDoctrine()->getManager();
@@ -124,17 +125,19 @@ class SifdaInformeOrdenTrabajoController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('MinsalsifdaBundle:SifdaInformeOrdenTrabajo')->find($id);
-
+        
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find SifdaInformeOrdenTrabajo entity.');
         }
-
+        
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
-        );
+       );
+        
+        
     }
 
     /**

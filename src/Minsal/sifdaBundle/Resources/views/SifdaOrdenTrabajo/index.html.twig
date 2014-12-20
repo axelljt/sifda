@@ -1,7 +1,7 @@
 {% extends 'MinsalsifdaBundle::layoutTecnico.html.twig' %}
 
 {% block contenido_in -%}
-    <center><h3>Mostrar ordenes ingresadas</h3></center>
+    <center><h3>Mostrar Ordenes Ingresadas</h3></center>
     <div id="seleccion">
         <div class="row-fluid">
             <div class="span11 offset1">
@@ -60,6 +60,9 @@
                     </li>
                     <li>
                         <a href="{{ path('sifdainformeordentrabajo_new', { 'id': entity.id }) }}">nuevo Informe</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('sifdainformeordentrabajo', { 'idOrd': entity.id }) }}">listar Informes</a>
                     </li>
                 </ul>
                 </td>
