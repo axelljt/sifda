@@ -40,6 +40,26 @@
             </div> 
         </div>
         <div class="span10">
+            
+            <table id="tabla_descripcion" class="table table-bordered table-hover table-condensed">
+                
+                <tr><td aling="right"><strong>Dependencia Atiende:</strong></center></td>
+                    <td>{{entity.idDependenciaEstablecimiento}}   {{ dependencia.0.nombre }}</td>    
+                </tr>
+                
+                <tr><td aling="right"><strong>Tipo Servicio Solicitado:</strong></center></td>
+                    <td>{{entity.idTipoServicio}}</td>
+                </tr>
+                <tr><td aling="right"><strong>Usuario Solicitante:</strong></center></td>
+                    <td>{{entity.user}}</td>
+                </tr>
+                <tr><td aling="right"><strong>Descripcion:</strong></center></td>
+                    <td>{{entity.descripcion}}</td>
+                </tr>    
+                                                              
+            </table>
+            
+            
             <table id="tabla_show" class="table table-bordered table-hover table-condensed">
                 
                 <tr>
@@ -59,9 +79,9 @@
   
             </table>
                 
-                {{entity.descripcion}}
+               {# {{entity.descripcion}}
                 {{entity.id}}
-                {{entity.idEstado}}
+                {{entity.idEstado}}#}
                 
 
         </div>
