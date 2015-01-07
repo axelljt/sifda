@@ -32,7 +32,7 @@ class FosUserUser
     /**
      * @var string
      *
-     * @ORM\Column(name="username_canonical", type="string", length=255, nullable=false)
+     * @ORM\Column(name="username_canonical", type="string", length=255, nullable=true)
      */
     private $usernameCanonical;
 
@@ -46,7 +46,7 @@ class FosUserUser
     /**
      * @var string
      *
-     * @ORM\Column(name="email_canonical", type="string", length=255, nullable=false)
+     * @ORM\Column(name="email_canonical", type="string", length=255, nullable=true)
      */
     private $emailCanonical;
 
@@ -81,14 +81,14 @@ class FosUserUser
     /**
      * @var boolean
      *
-     * @ORM\Column(name="locked", type="boolean", nullable=false)
+     * @ORM\Column(name="locked", type="boolean", nullable=true)
      */
     private $locked;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="expired", type="boolean", nullable=false)
+     * @ORM\Column(name="expired", type="boolean", nullable=true)
      */
     private $expired;
 
@@ -116,14 +116,14 @@ class FosUserUser
     /**
      * @var string
      *
-     * @ORM\Column(name="roles", type="text", nullable=false)
+     * @ORM\Column(name="roles", type="text", nullable=true)
      */
     private $roles;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="credentials_expired", type="boolean", nullable=false)
+     * @ORM\Column(name="credentials_expired", type="boolean", nullable=true)
      */
     private $credentialsExpired;
 
@@ -137,14 +137,14 @@ class FosUserUser
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * @ORM\Column(name="created_at", type="datetime", nullable=true)
      */
     private $createdAt;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="updated_at", type="datetime", nullable=false)
+     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
 

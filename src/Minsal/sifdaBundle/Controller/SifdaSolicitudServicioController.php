@@ -185,7 +185,77 @@ class SifdaSolicitudServicioController extends Controller
     }
     
     
+    /*Controlador que permite recuperar la informacion de un objeto especifico de la bd*/
+    
+    /**
+     * Controlador para la busqueda de Estados.
+     *
+     * @Route("/buscar_estado/{id}", name="sifda_solicitudservicio_buscar_estado")
+     * @Method("GET")
+     * @Template()
+     */
+    public function BuscarEstadoAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
 
+        $entity = $em->getRepository('MinsalsifdaBundle:SifdaSolicitudServicio')->find($id);
+        $dependencia=$em->getRepository('MinsalsifdaBundle:CtlDependencia')->findBy(array('id'=>$id));
+        //ladybug_dump($dependencia);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Solicitud de Servicio con id: '.$id.'No encontrado');
+        }
+
+//        $deleteForm = $this->createDeleteForm($id);
+        
+          $estado=$entity->getIdEstado();
+          
+          
+          if($estado == "Ingresado")
+          
+              return $this->render('MinsalsifdaBundle:SifdaSolicitudServicio:showEstado2.html.twig' , array('entity' =>$entity, 'dependencia'=>$dependencia));
+//              return $this->renderView('MinsalsifdaBundle:SifdaSolicitudServicio:ShowEstado2.html.twig', array('entity' =>$entity));
+//          
+          elseif($estado == "Asignado")
+                return $this->render('MinsalsifdaBundle:SifdaSolicitudServicio:showEstado3.html.twig' , array('entity' =>$entity, 'dependencia'=>$dependencia));
+          
+          elseif($estado == "Rechazado")
+                return $this->render('MinsalsifdaBundle:SifdaSolicitudServicio:showEstado4.html.twig' , array('entity' =>$entity, 'dependencia'=>$dependencia));
+          
+          elseif($estado == "Finalizado")
+                return $this->render('MinsalsifdaBundle:SifdaSolicitudServicio:showEstado5.html.twig' , array('entity' =>$entity, 'dependencia'=>$dependencia));
+//               return $this->renderView('MinsalsifdaBundle:SifdaSolicitudServicio:ShowEstado.html.twig', array('entity' =>$entity));
+//        return $this->redirect($this->generateUrl('sifda_solicitudservicio', array('id' => $id)));        
+    }
+    
+    
+    /*Fin de la prueba recuperar estado*/
+
+    
+    /*Controlador que permite recuperar el nombre de la dependencia*/
+    /**
+     * Controlador para la busqueda de Estados.
+     *
+     * @Route("/buscar_dependencia1/{id}", name="sifda_solicitudservicio_buscar_dependencia1")
+     * @Method("GET")
+     * @Template()
+     */
+    
+    public function GetDependenciasAction($id){
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $dependencia=$em->getRepository('MinsalsifdaBundle:CtlDependencia')->findBy(array('id'=>$id));
+        ladybug_dump($dependencia);
+        if(!$dependencia){
+            return $this->render('MinsalsifdaBundle:Default:index.html.twig',array('dependencia'=>0));
+            //throw $this->createNotFoundException('Unable to find SifdaSolicitudServicio entity');
+        }
+            
+        return $this->render('MinsalsifdaBundle:Default:index.html.twig',array('dependencia'=>$dependencia));
+        
+        }
+    
     /**
      * Displays a form to edit an existing SifdaSolicitudServicio entity.
      *

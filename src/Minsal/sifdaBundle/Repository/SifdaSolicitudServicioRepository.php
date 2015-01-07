@@ -13,6 +13,17 @@ class SifdaSolicitudServicioRepository extends EntityRepository
        return $repositorio->getResult();	
     }
     
+    /* Se obtiene la dependencia a la que se le hace la solicitud de servicio */
+    public function ObtenerDependencia($id)
+    {
+        $dql="SELECT ss, de, d.nombre nombre FROM MinsalsifdaBundle:SifdaSolicitudServicio ss JOIN ss.idDependenciaEstablecimiento de JOIN de.idDependencia d WHERE de.id=$id";
+         $repositorio = $this->getEntityManager()->createQuery($dql);       
+       return $repositorio->getResult();
+       //$repositorio = $this->getEntityManager()->createQuery($dql)->setParameter(':solicitud', $id);
+        
+        //return $repositorio->getResult();     
+    }
+    
 }
 
 ?>
