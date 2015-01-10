@@ -1,16 +1,45 @@
 {% extends 'MinsalsifdaBundle::layoutTecnico.html.twig' %}
 
 {% block contenido_in -%}
-    <center><h3>Editar Informe de Orden de Trabajo</h3></center>
-
-    {{ form(edit_form) }}
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('sifdainformeordentrabajo', { 'idOrd': entity.idOrdenTrabajo.id }) }}">
-            Back to the list
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+  {{form_start(edit_form)}}
+    {{form_errors(edit_form)}}
+    <div class="row-fluid">
+        <center><h3>Editar Informe de Orden de Trabajo</h3></center>
+        <div class="span12">
+            <div class="row-fluid">
+                <div class="span4 offset2">
+                    
+                    {{form_row(edit_form.detalle)}}
+                    {{form_row(edit_form.fechaRealizacion)}}
+                    {{form_row(edit_form.fechaRegistro)}}
+                    {{form_row(edit_form.idEmpleado)}}
+                    
+                    
+                </div>                   
+                <div class="span5 offset1">
+                    {{form_row(edit_form.idOrdenTrabajo)}}
+                    {{form_row(edit_form.idEtapa)}}
+                    {{form_row(edit_form.idSubactividad)}}
+                    {{form_row(edit_form.idDependenciaEstablecimiento)}}
+                    
+                    
+                </div>
+            </div>           
+          
+            
+        <center>
+            
+            <table id="botones">
+                <tr>
+                    <td>{{form_row(edit_form.submit,{'attr':{'class':'btn'}})}}</td>
+                    <td>{{form_row(delete_form.submit,{'attr':{'class':'btn'}})}}</td>
+                    <td><a href="{{ path('sifdainformeordentrabajo', { 'idOrd': entity.idOrdenTrabajo.id }) }}" class="btn">Regresar</a></td>
+                </tr>  
+            </table>            
+        </center>
+            
+      </div> 
+   </div>                    
+                    
+  {{form_end(edit_form)}}  
 {% endblock %}

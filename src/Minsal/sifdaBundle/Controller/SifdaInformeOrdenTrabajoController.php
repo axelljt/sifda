@@ -25,16 +25,21 @@ class SifdaInformeOrdenTrabajoController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction($idOrd)
-    {
+    public function indexAction($idOrd) {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('MinsalsifdaBundle:SifdaInformeOrdenTrabajo')->findBy(array('idOrdenTrabajo'=>$idOrd));
-
-        return array(
+        $entities = $em->getRepository('MinsalsifdaBundle:SifdaInformeOrdenTrabajo')->findBy(array('idOrdenTrabajo' => $idOrd));
+        
+            $orden = $em->getRepository('MinsalsifdaBundle:SifdaOrdenTrabajo')->find($idOrd);
+            if (!$orden) {
+                throw $this->createNotFoundException('Unable to find SifdaInformeOrdenTrabajo entity.');
+            }
+            return array(
             'entities' => $entities,
+            'orden' => $orden,
         );
     }
+
     /**
      * Creates a new SifdaInformeOrdenTrabajo entity.
      *
@@ -44,6 +49,7 @@ class SifdaInformeOrdenTrabajoController extends Controller
      */
     public function createAction(Request $request)
     {
+        
         $entity = new SifdaInformeOrdenTrabajo();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
@@ -55,10 +61,11 @@ class SifdaInformeOrdenTrabajoController extends Controller
 
             return $this->redirect($this->generateUrl('sifdainformeordentrabajo_show', array('id' => $entity->getId())));
         }
-
+        
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
+            'orden'   =>$entity->getIdOrdenTrabajo(),
         );
     }
 
@@ -102,8 +109,8 @@ class SifdaInformeOrdenTrabajoController extends Controller
                 throw $this->createNotFoundException('Unable to find SifdaInformeOrdenTrabajo entity.');
             }
             $entity->setIdOrdenTrabajo($orden);
-            
         }
+        $entity->setFechaRegistro(new \DateTime());
         $form = $this->createCreateForm($entity);
         return array(
             'entity' => $entity,
@@ -236,12 +243,13 @@ class SifdaInformeOrdenTrabajoController extends Controller
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find SifdaInformeOrdenTrabajo entity.');
             }
-
+            $idOrd = $entity->getIdOrdenTrabajo()->getId();
             $em->remove($entity);
+            
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('sifdainformeordentrabajo'));
+        return $this->redirect($this->generateUrl('sifdainformeordentrabajo', array('idOrd' => $idOrd)));
     }
 
     /**

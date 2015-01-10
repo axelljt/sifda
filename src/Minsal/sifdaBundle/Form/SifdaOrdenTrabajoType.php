@@ -18,9 +18,9 @@ class SifdaOrdenTrabajoType extends AbstractType
             ->add('descripcion')
             ->add('codigo')
             ->add('fechaCreacion','date',array('input'=>'datetime','widget'=>'single_text',
-                  'format'=>'yy-MM-dd','attr'=>array('class'=>'date')))
+                  'format'=>'yyyy-MM-dd','attr'=>array('class'=>'date')))
             ->add('fechaFinalizacion','date',array('input'=>'datetime','widget'=>'single_text',
-                  'format'=>'yy-MM-dd','attr'=>array('class'=>'date')))
+                  'format'=>'yyyy-MM-dd','attr'=>array('class'=>'date')))
             ->add('observacion')
             ->add('idPrioridad')
             ->add('idEstado')

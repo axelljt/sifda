@@ -318,4 +318,13 @@ class SifdaInformeOrdenTrabajo
     {
         return $this->idSubactividad;
     }
+    
+    /**
+     * 
+     * @return type 
+     */
+    public function __toString()
+    {
+        return $this->id.' - '.$this->idOrdenTrabajo->getDescripcion();
+    }
 }

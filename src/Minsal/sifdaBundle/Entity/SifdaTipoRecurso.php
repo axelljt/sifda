@@ -123,4 +123,9 @@ class SifdaTipoRecurso
     {
         return $this->rrhh;
     }
+    
+    public function __toString() 
+    {
+        return $this->id." - ".$this->nombre;
+    }
 }

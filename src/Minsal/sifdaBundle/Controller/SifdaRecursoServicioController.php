@@ -21,18 +21,22 @@ class SifdaRecursoServicioController extends Controller
     /**
      * Lists all SifdaRecursoServicio entities.
      *
-     * @Route("/", name="sifdarecursoservicio")
+     * @Route("/lstRec/{idInf}", name="sifdarecursoservicio")
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction($idInf)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('MinsalsifdaBundle:SifdaRecursoServicio')->findAll();
-
+        $entities = $em->getRepository('MinsalsifdaBundle:SifdaRecursoServicio')->findBy(array('idInformeOrdenTrabajo'=>$idInf)); 
+        $informe = $em->getRepository('MinsalsifdaBundle:SifdaInformeOrdenTrabajo')->find($idInf);
+            if (!$informe) {
+                throw $this->createNotFoundException('Unable to find SifdaRecursoServicio entity.');
+            } 
         return array(
             'entities' => $entities,
+            'informe' => $informe,
         );
     }
     /**
@@ -84,17 +88,27 @@ class SifdaRecursoServicioController extends Controller
     /**
      * Displays a form to create a new SifdaRecursoServicio entity.
      *
-     * @Route("/new", name="sifdarecursoservicio_new")
+     * @Route("/new/{id}", name="sifdarecursoservicio_new")
      * @Method("GET")
      * @Template()
      */
-    public function newAction()
+    public function newAction($id)
     {
         $entity = new SifdaRecursoServicio();
+        $informe = null;
+        if ($id != 0) {
+            $em = $this->getDoctrine()->getManager();
+            $informe = $em->getRepository('MinsalsifdaBundle:SifdaInformeOrdenTrabajo')->find($id);
+            if (!$informe) {
+                throw $this->createNotFoundException('Unable to find SifdaRecursoServicio entity.');
+            }
+            $entity->setIdInformeOrdenTrabajo($informe);
+            }
         $form   = $this->createCreateForm($entity);
 
         return array(
-            'entity' => $entity,
+            'entity' => $entity,    
+            'informe' => $informe,
             'form'   => $form->createView(),
         );
     }

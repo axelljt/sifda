@@ -16,9 +16,11 @@ class SifdaInformeOrdenTrabajoType extends AbstractType
     {
         $builder
             ->add('detalle')
-            ->add('fechaRealizacion')
-            ->add('fechaRegistro')
-            ->add('terminado')
+            ->add('fechaRealizacion','date',array('input'=>'datetime','widget'=>'single_text',
+                  'format'=>'yyyy-MM-dd','attr'=>array('class'=>'date')))
+            ->add('fechaRegistro','date',array('input'=>'datetime','widget'=>'single_text',
+                  'format'=>'yyyy-MM-dd','attr'=>array('class'=>'date'))) 
+//            ->add('terminado')
             ->add('idDependenciaEstablecimiento')
             ->add('idEmpleado')
             ->add('idOrdenTrabajo')    

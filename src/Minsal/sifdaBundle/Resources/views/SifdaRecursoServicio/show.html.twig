@@ -17,12 +17,16 @@
                 <th>Costounitario</th>
                 <td>{{ entity.costoUnitario }}</td>
             </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ entity.idTipoRecursoDependencia.idTipoRecurso.nombre }}</td>
+            </tr>
         </tbody>
     </table>
 
         <ul class="record_actions">
     <li>
-        <a href="{{ path('sifdarecursoservicio') }}">
+        <a href="{{ path('sifdarecursoservicio', { 'idInf': entity.idInformeOrdenTrabajo.id }) }}">
             Back to the list
         </a>
     </li>

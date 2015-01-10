@@ -2,7 +2,27 @@
 
 {% block contenido_in -%}
     <center><h3>Mostrar Informes de Orden de Trabajo</h3></center>
-
+<table id="tabla" class="table table-bordered table-hover table-condensed">
+        <tbody>
+            <tr>
+                <th>Id Orden de trabajo</th>
+                <td>{{ orden.id }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ orden.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>Codigo</th>
+                <td>{{ orden.codigo }}</td>
+            </tr>
+            
+            <tr>
+                <th>Observacion</th>
+                <td>{{ orden.observacion }}</td>
+            </tr>
+        </tbody>
+    </table>
     <table id="tabla" class="table table-bordered table-hover table-condensed">
         <thead>
             <tr>
@@ -11,7 +31,6 @@
                 <th>Fecharealizacion</th>
                 <th>Fecharegistro</th>
                 <th>Terminado</th>
-                <th>Orden Trabajo</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -23,7 +42,6 @@
                 <td>{% if entity.fechaRealizacion %}{{ entity.fechaRealizacion|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{% if entity.fechaRegistro %}{{ entity.fechaRegistro|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{{ entity.terminado }}</td>
-                <td>{{ entity.idOrdenTrabajo }}</td>
                 <td>
                 <ul>
                     <li>
@@ -32,18 +50,23 @@
                     <li>
                         <a href="{{ path('sifdainformeordentrabajo_edit', { 'id': entity.id }) }}">edit</a>
                     </li>
+                    <li>
+                        <a href="{{ path('sifdarecursoservicio_new', { 'id': entity.id }) }}">nuevo Recurso</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('sifdarecursoservicio', { 'idInf': entity.id }) }}">listar Recursos</a>
+                    </li>
                 </ul>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-        <ul>
-        <li>
-            <a href="{{ path('sifdainformeordentrabajo_new', { 'id': 0 }) }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
+            <center>
+            <table id="botones">
+            <tr>
+                <td><a href="{{ path('sifda_ordentrabajo') }}" class="btn">Regresar</a></td>
+            </tr>    
+            </table>
+        </center>
     {% endblock %}
