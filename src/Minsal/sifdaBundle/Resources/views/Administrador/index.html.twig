@@ -1,0 +1,31 @@
+{% extends 'MinsalsifdaBundle::layoutAdministrador.html.twig' %}
+{% block contenido_in %}
+    
+    {{dependencias}}
+{% block encabezado %}
+    Fecha del sistema: {{ "now"|date("d/m/Y") }}<center><h3>Menú de Inicio</h3></center>
+{% endblock %}
+
+{% endblock %}
+{% block javascripts_step %}
+    {{ parent() }}
+    <script>
+   $(document).ready(function(){
+        
+       {# var estado= {{dependencias}};
+                
+            if(estado!=0)#}
+                $('#dialog').attr('title','saved').text('Hay {{dependencias}} solicitudes Nuevas').dialog(); 
+
+       
+        
+        
+     
+        
+        
+        
+    });
+   
+    </script>        
+{% endblock %} 
+

@@ -10,4 +10,10 @@ class DefaultController extends Controller
     {
         return $this->render('MinsalsifdaBundle:Default:index.html.twig', array('name' => $name));
     }
+    
+    public function administradorAction($name)
+    {
+        return $this->render('MinsalsifdaBundle:Default:administrador.html.twig', array('name' => $name));
+    }
+    
 }

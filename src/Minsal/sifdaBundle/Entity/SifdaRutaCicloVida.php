@@ -7,8 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * SifdaRutaCicloVida
  *
- * @ORM\Table(name="sifda_ruta_ciclo_vida", indexes={@ORM\Index(name="contiene_fk", columns={"id_ruta"})})
- * @ORM\Entity
+ * @ORM\Table(name="sifda_ruta_ciclo_vida", uniqueConstraints={@ORM\UniqueConstraint(name="idx_sifda_ruta_ciclo_vida", columns={"id"})}, indexes={@ORM\Index(name="contiene_fk", columns={"id_ruta"}), @ORM\Index(name="idx_id_ruta_etapa", columns={"id_etapa"})})
+ * @ORM\Entity(repositoryClass="Minsal\sifdaBundle\Repository\SifdaRutaCicloVidaRepository")
  */
 class SifdaRutaCicloVida
 {
@@ -32,7 +32,7 @@ class SifdaRutaCicloVida
     /**
      * @var string
      *
-     * @ORM\Column(name="ref1", type="string", length=20, nullable=false)
+     * @ORM\Column(name="ref1", type="string", length=20, nullable=true)
      */
     private $ref1;
 
@@ -44,9 +44,9 @@ class SifdaRutaCicloVida
     private $jerarquia;
 
     /**
-     * @var integer
+     * @var boolean
      *
-     * @ORM\Column(name="ignorar_sig", type="integer", nullable=false)
+     * @ORM\Column(name="ignorar_sig", type="boolean", nullable=false)
      */
     private $ignorarSig;
 
@@ -67,7 +67,20 @@ class SifdaRutaCicloVida
      */
     private $idRuta;
 
-
+    /**
+     * @var \SifdaRutaCicloVida
+     *
+     * @ORM\ManyToOne(targetEntity="SifdaRutaCicloVida", inversedBy="subetapas")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_etapa", referencedColumnName="id")
+     * })
+     */
+    protected $idEtapa;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="SifdaRutaCicloVida", mappedBy="idEtapa")
+     */
+    protected $subetapas;
 
     /**
      * Get id
@@ -151,7 +164,7 @@ class SifdaRutaCicloVida
     /**
      * Set ignorarSig
      *
-     * @param integer $ignorarSig
+     * @param boolean $ignorarSig
      * @return SifdaRutaCicloVida
      */
     public function setIgnorarSig($ignorarSig)
@@ -164,7 +177,7 @@ class SifdaRutaCicloVida
     /**
      * Get ignorarSig
      *
-     * @return integer 
+     * @return boolean 
      */
     public function getIgnorarSig()
     {
@@ -215,5 +228,38 @@ class SifdaRutaCicloVida
     public function getIdRuta()
     {
         return $this->idRuta;
+    }
+
+    /**
+     * Set idEtapa
+     *
+     * @param \Minsal\sifdaBundle\Entity\SifdaRutaCicloVida $idEtapa
+     * @return SifdaRutaCicloVida
+     */
+    public function setIdEtapa(\Minsal\sifdaBundle\Entity\SifdaRutaCicloVida $idEtapa = null)
+    {
+        $this->idEtapa = $idEtapa;
+
+        return $this;
+    }
+
+    /**
+     * Get idEtapa
+     *
+     * @return \Minsal\sifdaBundle\Entity\SifdaRutaCicloVida 
+     */
+    public function getIdEtapa()
+    {
+        return $this->idEtapa;
+    }
+
+        public function __construct()
+    {
+        $this->subetapas = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+        public function __toString() 
+    {
+        return $this->descripcion;
     }
 }

@@ -17,14 +17,22 @@ class SifdaOrdenTrabajoType extends AbstractType
         $builder
             ->add('descripcion')
             ->add('codigo')
-            ->add('fechaCreacion')
-            ->add('fechaFinalizacion')
+            ->add('fechaCreacion','date',array('input'=>'datetime','widget'=>'single_text',
+                  'format'=>'yy-MM-dd','attr'=>array('class'=>'date')))
+            ->add('fechaFinalizacion','date',array('input'=>'datetime','widget'=>'single_text',
+                  'format'=>'yy-MM-dd','attr'=>array('class'=>'date')))
             ->add('observacion')
             ->add('idPrioridad')
             ->add('idEstado')
             ->add('idDependenciaEstablecimiento')
             ->add('idEtapa')
-            ->add('idSolicitudServicio')
+            //>add('responsable', 'entity',
+            //    array('required' => false,
+            //        'label' => 'Responsable',
+            //        'class' => 'MinsalsifdaBundle:CtlEmpleado',
+            //        'property' => 'responsable'
+        //));    
+            //->add('idSolicitudServicio')
         ;
     }
     

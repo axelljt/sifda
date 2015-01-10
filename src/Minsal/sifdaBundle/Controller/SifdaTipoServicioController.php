@@ -13,7 +13,7 @@ use Minsal\sifdaBundle\Form\SifdaTipoServicioType;
 /**
  * SifdaTipoServicio controller.
  *
- * @Route("/sifdatiposervicio")
+ * @Route("/sifda/tiposervicio")
  */
 class SifdaTipoServicioController extends Controller
 {
@@ -44,20 +44,29 @@ class SifdaTipoServicioController extends Controller
      */
     public function createAction(Request $request)
     {
-        $entity = new SifdaTipoServicio();
-        $form = $this->createCreateForm($entity);
+        $tiposervicio = new SifdaTipoServicio();
+        $form = $this->createCreateForm($tiposervicio);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
+            $em->persist($tiposervicio);
             $em->flush();
-
-            return $this->redirect($this->generateUrl('sifdatiposervicio_show', array('id' => $entity->getId())));
+            
+            $ruta = new \Minsal\sifdaBundle\Entity\SifdaRuta();
+            $ruta->setDescripcion($tiposervicio->getDescripcion());
+            $ruta->setTipo($tiposervicio->getNombre());
+            $ruta->setIdTipoServicio($tiposervicio);
+            
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($ruta);
+            $em->flush();
+            
+            return $this->redirect($this->generateUrl('sifdatiposervicio_show', array('id' => $tiposervicio->getId())));
         }
 
         return array(
-            'entity' => $entity,
+            'entity' => $tiposervicio,
             'form'   => $form->createView(),
         );
     }
@@ -76,7 +85,7 @@ class SifdaTipoServicioController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array('label' => 'Registrar'));
 
         return $form;
     }
@@ -111,6 +120,7 @@ class SifdaTipoServicioController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('MinsalsifdaBundle:SifdaTipoServicio')->find($id);
+        $entities = $em->getRepository('MinsalsifdaBundle:SifdaRutaCicloVida')->obtenerEtapas($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find SifdaTipoServicio entity.');
@@ -120,6 +130,7 @@ class SifdaTipoServicioController extends Controller
 
         return array(
             'entity'      => $entity,
+            'entities' => $entities,            
             'delete_form' => $deleteForm->createView(),
         );
     }

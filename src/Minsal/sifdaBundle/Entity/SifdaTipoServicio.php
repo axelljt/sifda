@@ -126,8 +126,8 @@ class SifdaTipoServicio
     {
         return $this->idActividad;
     }
-    
-    public function __toString() {
-        return $this->descripcion;
+    public function __toString() 
+    {
+        return $this->nombre;
     }
 }

@@ -1,5 +1,16 @@
 {% extends 'MinsalsifdaBundle::layoutSolicitante.html.twig' %}
 
+{% block alert_step %}
+{% if errors is not null %}
+    {% include "MinsalsifdaBundle:Errors:errors.html.twig" with {'errors':errors} %}
+{% else %}
+    <div class="alert alert-info" id="alert_step">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <strong>Nota: </strong> Campos requeridos (*).
+    </div>    
+{% endif %}
+{% endblock %}
+
 {% block contenido_in -%}
 {{form_start(form)}}
 {{form_errors(form)}}
@@ -9,7 +20,7 @@
         <div class="row-fluid">
             <div class="span4 offset2">
                  {{form_row(form.descripcion)}}
-                 {{form_row(form.fechaRequiere)}}
+                 {{form_row(form.fechaRequiere, {'attr':{'readonly':'yes'}} )}}
                  {#{{form_row(form.idEstado)}}#}                
             </div>          
             <div class="span5 offset1">

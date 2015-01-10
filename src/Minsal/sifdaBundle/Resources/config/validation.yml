@@ -1,0 +1,8 @@
+Minsal\sifdaBundle\Entity\SifdaSolicitudServicio:
+    properties:
+        descripcion:
+            - NotBlank:
+                message: Por favor ingrese la descripcion
+            - Length:
+                min: 2
+                minMessage: "Minimo 2 caracteres"

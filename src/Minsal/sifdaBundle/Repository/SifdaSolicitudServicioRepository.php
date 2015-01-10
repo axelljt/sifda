@@ -24,6 +24,15 @@ class SifdaSolicitudServicioRepository extends EntityRepository
         //return $repositorio->getResult();     
     }
     
+    //Consulta para obtener el numero de solicitudes Ingresadas
+    
+    public function ContarSolicitudesIngresadas($estado)
+    {
+        $dql = "SELECT COUNT(s.idEstado) FROM MinsalsifdaBundle:SifdaSolicitudServicio s WHERE s.idEstado=$estado";
+        $repositorio=$this->getEntityManager()->createQuery($dql);
+        return $repositorio->getOneOrNullResult();
+    }
+    
 }
 
 ?>

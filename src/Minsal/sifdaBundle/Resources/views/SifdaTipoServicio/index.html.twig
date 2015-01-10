@@ -1,43 +1,41 @@
-{% extends '::base.html.twig' %}
+{% extends 'MinsalsifdaBundle::layoutResponsable.html.twig' %}
 
-{% block body -%}
-    <h1>SifdaTipoServicio list</h1>
-
-    <table class="records_list">
+{% block contenido_in -%}
+    <div class="page-header">
+        <center><h3>Listado de tipos de servicio</h3></center>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            
+            <table id="tabla" class="table table-bordered table-hover table-condensed" cellspacing="0" width="100%">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>Correlativo</th>
                 <th>Nombre</th>
                 <th>Descripcion</th>
-                <th>Actions</th>
+                <th>Acciones</th>
             </tr>
         </thead>
-        <tbody>
+                <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('sifdatiposervicio_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.id }}</td>
                 <td>{{ entity.nombre }}</td>
                 <td>{{ entity.descripcion }}</td>
                 <td>
                 <ul>
                     <li>
-                        <a href="{{ path('sifdatiposervicio_show', { 'id': entity.id }) }}">show</a>
+                        <a href="{{ path('sifdatiposervicio_show', { 'id': entity.id }) }}">Mostrar detalle</a>
                     </li>
-                    <li>
-                        <a href="{{ path('sifdatiposervicio_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
+<!--                    <li>
+                        <a href="{{ path('sifdatiposervicio_edit', { 'id': entity.id }) }}">Editar</a>
+                    </li>-->
                 </ul>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-        <ul>
-        <li>
-            <a href="{{ path('sifdatiposervicio_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
-    {% endblock %}
+        </div>
+    </div> 
+{% endblock %}

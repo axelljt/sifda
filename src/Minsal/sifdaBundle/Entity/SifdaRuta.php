@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * SifdaRuta
  *
- * @ORM\Table(name="sifda_ruta", indexes={@ORM\Index(name="tiene_fk", columns={"id_tipo_servicio"})})
+ * @ORM\Table(name="sifda_ruta", uniqueConstraints={@ORM\UniqueConstraint(name="idx_sifda_ruta", columns={"id"})}, indexes={@ORM\Index(name="tiene_fk", columns={"id_tipo_servicio"})})
  * @ORM\Entity
  */
 class SifdaRuta
@@ -39,15 +39,36 @@ class SifdaRuta
     /**
      * @var \SifdaTipoServicio
      *
-     * @ORM\ManyToOne(targetEntity="SifdaTipoServicio")
+     * @ORM\ManyToOne(targetEntity="SifdaTipoServicio", inversedBy="rutas")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_tipo_servicio", referencedColumnName="id")
      * })
      */
     private $idTipoServicio;
+    
+    /**
+    * @ORM\OneToMany(targetEntity="SifdaRutaCicloVida", mappedBy="idRuta")
+    */
+    private $etapas;
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->etapas = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
+    public function getEtapas()
+    {
+        return $this->etapas;
+    }
 
+    public function setEtapas(\Doctrine\Common\Collections\ArrayCollection $etapas)
+    {
+        $this->etapas = $etapas;
+    }
+    
     /**
      * Get id
      *
@@ -125,5 +146,10 @@ class SifdaRuta
     public function getIdTipoServicio()
     {
         return $this->idTipoServicio;
+    }
+    
+    public function __toString() 
+    {
+        return $this->descripcion;
     }
 }

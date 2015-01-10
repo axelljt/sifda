@@ -5,12 +5,24 @@
             <ul class="nav">
                     <div class="btn-group">
                         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                        TIPO DE SERVICIO
+                        <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a tabindex="-1" href="{{path('sifdatiposervicio')}}">Gestionar Tipos de servicio</a></li>
+                            <li><a tabindex="-2" href="{{ path('sifdatiposervicio_new') }}">Registrar un tipo de servicio</a></li>
+                            <li><a tabindex="-3" href="">Editar un tipo de servicio</a></li>
+                            <li><a tabindex="-4" href="">Mostrar etapas de un tipo de servcio</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                         ORDEN DE TRABAJO
                         <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a tabindex="-1" href="">Gestionar Solicitud de Servicio</a></li>
-                            <li><a tabindex="-2" href="">Gestionar Ordenes de Trabajo</a></li>
+                            <li><a tabindex="-1" href="{{path('sifda_gestionSolicitudes')}}">Gestionar Solicitud de Servicio</a></li>
+                            <li><a tabindex="-2" href="{{path('sifda_ordentrabajo_gestion')}}">Gestionar Ordenes de Trabajo</a></li>
                             <li><a tabindex="-3" href="">Seguimiento de Ordenes de Trabajo</a></li>
                             <li><a tabindex="-4" href="">Gestion de recursos</a></li>
                             <li><a tabindex="-5" href="">Consultar Carga Laboral por Tecnico</a></li>

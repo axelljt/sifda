@@ -36,6 +36,23 @@ class SifdaOrdenTrabajoController extends Controller
             'entities' => $entities,
         );
     }
+        /**
+     * Lists all SifdaOrdenTrabajo entities.
+     *
+     * @Route("/gestion_ordenestrabajo", name="sifda_ordentrabajo_gestion")
+     * @Method("GET")
+     * @Template()
+     */
+    public function gestionOrdenesAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entities = $em->getRepository('MinsalsifdaBundle:SifdaOrdenTrabajo')->findAll();
+
+        return array(
+            'entities' => $entities,
+        );
+    }
     /**
      * Creates a new SifdaOrdenTrabajo entity.
      *
@@ -47,6 +64,7 @@ class SifdaOrdenTrabajoController extends Controller
     {
         $entity = new SifdaOrdenTrabajo();
         $form = $this->createCreateForm($entity);
+        
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -77,7 +95,7 @@ class SifdaOrdenTrabajoController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array('label' => 'Crear orden de trabajo'));
 
         return $form;
     }
@@ -85,17 +103,32 @@ class SifdaOrdenTrabajoController extends Controller
     /**
      * Displays a form to create a new SifdaOrdenTrabajo entity.
      *
-     * @Route("/new", name="sifda_ordentrabajo_new")
+     * @Route("/new{id}", name="sifda_ordentrabajo_new")
      * @Method("GET")
      * @Template()
      */
-    public function newAction()
+    public function newAction($id)
     {
         $entity = new SifdaOrdenTrabajo();
+        if ($id != 0) {
+           $em = $this->getDoctrine()->getManager();
+           $solicitud = $em->getRepository('MinsalsifdaBundle:SifdaSolicitudServicio')->find($id);
+        
+           if (!$solicitud) {
+                throw $this->createNotFoundException('Unable to find SifdaOrdenTrabajo entity.');
+            }
+            
+        }
+        
+        $prioridad = $em->getRepository('MinsalsifdaBundle:Catalogo')->findBy(array('nombre'=>'Prioridad'));
+        $empleados = $em->getRepository('MinsalsifdaBundle:CtlEmpleado')->findAll();
         $form   = $this->createCreateForm($entity);
 
         return array(
             'entity' => $entity,
+            'solicitud' => $solicitud,
+            'prioridad' => $prioridad,
+            'empleados' => $empleados,
             'form'   => $form->createView(),
         );
     }

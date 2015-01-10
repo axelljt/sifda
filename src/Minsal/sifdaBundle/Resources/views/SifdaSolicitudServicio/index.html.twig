@@ -1,5 +1,19 @@
 {% extends 'MinsalsifdaBundle::layoutSolicitante.html.twig' %}
+
+ {% block jsDefault %}
+     {{parent()}}
+     <script src="{{ asset('bundles/minsalsifda/js/bootstrap-modal.js') }}"></script>
+     
+     
+   {% endblock %}
+
 {% block contenido_in %}
+    
+    {# cuadro Modal#}
+    
+   
+    
+    
     <center><h3>Mostrar solicitudes ingresadas</h3></center>
     <div id="seleccion">
         <div class="row-fluid">
@@ -61,10 +75,15 @@
                     <li>
                         <a href="{{ path('sifda_solicitudservicio_edit', { 'id': entity.id }) }}">edit</a>
                     </li>
+                    
+                    
+                    
                 </ul>
                 </td>
             </tr>
         {% endfor %}
+        
+      {{dependencias}}
         </tbody>
     </table>
     {% endblock %}
@@ -73,6 +92,11 @@
     {{ parent() }}
     <script>
     $(document).ready(function(){
+        
+        var estado= {{dependencias}};
+                
+            if(estado!=0)
+                $('#dialog').attr('title','saved').text('Hay {{dependencias}} solicitudes Nuevas').dialog(); 
 
         document.getElementById('todos').checked=true;
         
@@ -96,9 +120,12 @@
         $("#b1").click(function(){
            
         //cuadro dialogo
-           
-        //  $('#dialog').dialog();  
-        //$('#dialog').attr('title','saved').text('Los Datos se guardaron Exitosamente').dialog();
+        
+        {# $('#dialog').attr('title','saved').text('Los Datos se guardaron Exitosamente').dialog(); #}
+         
+         
+         //$('#dialog').dialog();  
+       
         
           {#$('#dialog').attr('title','saved').text('Los Datos se guardaron Exitosamente').dialog({
               

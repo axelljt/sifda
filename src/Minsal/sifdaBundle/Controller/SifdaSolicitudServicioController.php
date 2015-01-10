@@ -33,6 +33,39 @@ class SifdaSolicitudServicioController extends Controller
 
         $entities = $em->getRepository('MinsalsifdaBundle:SifdaSolicitudServicio')->findAll();
 
+        $estado=1;
+        $em = $this->getDoctrine()->getManager();
+        
+         $solicitudes = $em->getRepository('MinsalsifdaBundle:SifdaSolicitudServicio')->ContarSolicitudesIngresadas($estado);
+//         $solicitudes2=  implode("",$solicitudes);
+//         ladybug_dump($solicitudes);
+         if(!$solicitudes)
+             {
+                throw $this->createNotFoundException('Unable to find SifdaSolicitudServicio entity.');
+             }
+            
+                     
+       $valor=  array_shift($solicitudes);
+             
+        return array(
+            'entities' => $entities,
+            'dependencias'=>$valor
+        );
+    }
+    
+        /**
+     * Lists all SifdaSolicitudServicio entities.
+     *
+     * @Route("/gestion_solicitudes", name="sifda_gestionSolicitudes")
+     * @Method("GET")
+     * @Template()
+     */
+    public function gestionSolicitudesAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entities = $em->getRepository('MinsalsifdaBundle:SifdaSolicitudServicio')->findAll();
+
         return array(
             'entities' => $entities,
         );
@@ -80,8 +113,9 @@ class SifdaSolicitudServicioController extends Controller
         $entity->setUser($idUser);
         $entity->setFechaRecepcion(new \DateTime());
         $form->handleRequest($request);
-
-        if ($form->isValid()) {
+        $validator = $this->get('validator');
+        $errors = $validator->validate($entity);
+        if ($form->isValid() and count($errors)<=0) {
             $em->persist($entity);
             $em->flush();
 
@@ -93,6 +127,7 @@ class SifdaSolicitudServicioController extends Controller
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
+            'errors' => $errors
         );
     }
 
@@ -130,6 +165,7 @@ class SifdaSolicitudServicioController extends Controller
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
+            'errors' => null
         );
     }
 
@@ -255,6 +291,26 @@ class SifdaSolicitudServicioController extends Controller
         return $this->render('MinsalsifdaBundle:Default:index.html.twig',array('dependencia'=>$dependencia));
         
         }
+        
+     /*controlador que permite recuperar cuantas solicitudes estan Ingresados
+     * @Route("/contar_dependencia", name="sifda_solicitudservicio_contar_dependencia")
+     * @Method("GET")
+     * @Template()
+     */
+        
+    public function GetNumeroSolicitudesIngresadas()
+     {
+        $estado="Ingresado";
+        $em = $this->getDoctrine()->getManager();
+        
+         $solicitudes = $em->getRepository('MinsalsifdaBundle:SifdaSolicitudServicio')->ContarSolicitudesIngresadas($estado);
+         
+         if(!$solicitudes)
+             {
+                throw $this->createNotFoundException('Unable to find SifdaSolicitudServicio entity.');
+             }
+          return $this->render('MinsalsifdaBundle:Default:index.html.twig',array('dependencia'=>$solicitudes));   
+     }    
     
     /**
      * Displays a form to edit an existing SifdaSolicitudServicio entity.
