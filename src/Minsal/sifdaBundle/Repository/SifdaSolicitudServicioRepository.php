@@ -33,6 +33,18 @@ class SifdaSolicitudServicioRepository extends EntityRepository
         return $repositorio->getOneOrNullResult();
     }
     
+    //Consulta para obtener el numero de solicitudes Ingresadas
+    
+    public function RechazarSolicitudServicio($id)
+    {
+        $dql = "UPDATE MinsalsifdaBundle:SifdaSolicitudServicio s SET s.idEstado = 3  WHERE s.idEstado=$id";
+        $repositorio=$this->getEntityManager()->createQuery($dql);
+        return $repositorio->getOneOrNullResult();
+            
+    }
+    
+    
+    
 }
 
 ?>

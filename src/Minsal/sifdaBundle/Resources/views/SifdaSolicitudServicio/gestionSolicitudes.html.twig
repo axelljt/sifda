@@ -53,13 +53,14 @@
                 <td>{{ entity.descripcion }}</td>
                 <td>{% if entity.fechaRecepcion %}{{ entity.fechaRecepcion|date('d-m-Y H:i:s') }}{% endif %}</td>
                 <td>{% if entity.fechaRequiere %}{{ entity.fechaRequiere|date('d-m-Y') }}{% endif %}</td>
+                
                 <td>
                 <ul>
                     <li>                        
                         <a  href="{{ path('sifda_ordentrabajo_new', { 'id': entity.id }) }}">Crear orden de trabajo</a>
                     </li>
                     <li>                        
-                        <a  href="{{ path('sifda_solicitudservicio_delete2', { 'id': entity.id }) }}">Rechazar solicitud de servicio</a>
+                        <a  href="{{ path('sifda_solicitudservicio_rechazar', { 'id': entity.id }) }}">Rechazar solicitud de servicio</a>
                     </li>
                     <li>                        
                         <a  href="{{ path('sifda_solicitudservicio_delete2', { 'id': entity.id }) }}">Reprogramar solicitud de servicio</a>
@@ -70,12 +71,21 @@
         {% endfor %}
         </tbody>
     </table>
+        
+        
     {% endblock %}
 
 {% block javascripts_step %}
     {{ parent() }}
     <script>
     $(document).ready(function(){
+
+
+        /*Cuadro de Dialogo*/
+        
+           
+
+        /*Fin Cuadro Dialogo*/
 
         document.getElementById('todos').checked=true;
         
@@ -186,3 +196,5 @@
     
     </script>
     {% endblock%}
+    
+   

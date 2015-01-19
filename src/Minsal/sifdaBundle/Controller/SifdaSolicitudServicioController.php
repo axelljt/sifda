@@ -446,6 +446,53 @@ class SifdaSolicitudServicioController extends Controller
     }
     
     
+    /**
+     * Rechazar una SifdaSolicitudServicio entity.
+     *
+     * @Route("/sifda/rechazar/{id}", name="sifda_solicitudservicio_rechazar")
+      * @Method("GET")
+     */
+    
+    
+    public function rechazaraction($id){
+        
+        $res=0;
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('MinsalsifdaBundle:SifdaSolicitudServicio')->find($id);
+         
+        if (!$entity) {
+                throw $this->createNotFoundException('No encontre la Entidad.');
+            }
+
+            $estado=$entity->getIdEstado()->getId();
+            if($estado==1)
+            {
+                $objEstado = $em->getRepository('MinsalsifdaBundle:CatalogoDetalle')->find(3);   
+            if (!$objEstado) {
+                throw $this->createNotFoundException('No encontre el Estado.');
+            }
+                
+                $entity->setIdEstado($objEstado);
+                $em->merge($entity);
+                $em->flush();
+                
+                $res=$estado;
+                  return $this->render('MinsalsifdaBundle:SifdaSolicitudServicio:rechazarSolicitudes.html.twig' , array('entity' =>$entity,'val'=>$res));
+            }     
+            
+         else 
+             {
+                $res=$estado;
+                return $this->render('MinsalsifdaBundle:SifdaSolicitudServicio:rechazarSolicitudes.html.twig' , array('entity' =>$entity,'val'=>$res));
+             } 
+//                throw $this->createNotFoundException('No pude rechazar la solicitud.');
+            
+            
+    } 
+    
+    
+    
+    
 
     /**
      * Creates a form to delete a SifdaSolicitudServicio entity by id.
