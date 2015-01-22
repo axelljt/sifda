@@ -56,23 +56,47 @@ class SifdaOrdenTrabajoController extends Controller
     /**
      * Creates a new SifdaOrdenTrabajo entity.
      *
-     * @Route("/", name="sifda_ordentrabajo_create")
+     * @Route("/create/{id}", name="sifda_ordentrabajo_create")
      * @Method("POST")
      * @Template("MinsalsifdaBundle:SifdaOrdenTrabajo:new.html.twig")
      */
-    public function createAction(Request $request)
+     
+        public function createAction(Request $request, $id)
     {
         $entity = new SifdaOrdenTrabajo();
-        $form = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity, $id);
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        //Obtener la solicitud de servicio que se va a atender
+        $idSolicitudServicio = $em->getRepository('MinsalsifdaBundle:SifdaSolicitudServicio')->find($id);
+        $entity->setIdSolicitudServicio($idSolicitudServicio);
         
         $form->handleRequest($request);
-
+        
+        //Obtener la dependencia y establecimiento de la orden de trabajo
+        $establecimiento = $form->get('establecimiento')->getData();
+        $dependencia = $form->get('dependencia')->getData();
+        $idDependenciaEstablecimiento = $em->getRepository('MinsalsifdaBundle:CtlDependenciaEstablecimiento')->findOneBy(array(
+                                                           'idEstablecimiento' => $establecimiento,
+                                                           'idDependencia' => $dependencia         
+                                                            ));
+        
+        if (!$idDependenciaEstablecimiento) {
+            throw $this->createNotFoundException('Unable to find CtlDependenciaEstablecimiento entity.');
+        }
+        $entity->setIdDependenciaEstablecimiento($idDependenciaEstablecimiento);
+        
+        //Generar el codigo que se le asignara a la orden de trabajo
+        $codigo = $this->generarCodigoOrden($idDependenciaEstablecimiento);
+        $entity->setCodigo($codigo);
+        
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('sifda_ordentrabajo_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('sifda_ordentrabajo_gestion'));
         }
 
         return array(
@@ -85,13 +109,14 @@ class SifdaOrdenTrabajoController extends Controller
      * Creates a form to create a SifdaOrdenTrabajo entity.
      *
      * @param SifdaOrdenTrabajo $entity The entity
+     * @param mixed $id The entity id
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(SifdaOrdenTrabajo $entity)
+    private function createCreateForm(SifdaOrdenTrabajo $entity, $id)
     {
         $form = $this->createForm(new SifdaOrdenTrabajoType(), $entity, array(
-            'action' => $this->generateUrl('sifda_ordentrabajo_create'),
+            'action' => $this->generateUrl('sifda_ordentrabajo_create', array('id' => $id)),
             'method' => 'POST',
         ));
 
@@ -109,7 +134,7 @@ class SifdaOrdenTrabajoController extends Controller
      */
     public function newAction($id)
     {
-        $entity = new SifdaOrdenTrabajo();
+         $entity = new SifdaOrdenTrabajo();
         if ($id != 0) {
            $em = $this->getDoctrine()->getManager();
            $solicitud = $em->getRepository('MinsalsifdaBundle:SifdaSolicitudServicio')->find($id);
@@ -120,14 +145,12 @@ class SifdaOrdenTrabajoController extends Controller
             
         }
         
-        $prioridad = $em->getRepository('MinsalsifdaBundle:Catalogo')->findBy(array('nombre'=>'Prioridad'));
         $empleados = $em->getRepository('MinsalsifdaBundle:CtlEmpleado')->findAll();
-        $form   = $this->createCreateForm($entity);
+        $form   = $this->createCreateForm($entity, $id);
 
         return array(
             'entity' => $entity,
             'solicitud' => $solicitud,
-            'prioridad' => $prioridad,
             'empleados' => $empleados,
             'form'   => $form->createView(),
         );
@@ -300,5 +323,50 @@ class SifdaOrdenTrabajoController extends Controller
              return $response->setData($mensaje);
         }else
             {   return new Response('0');   }       
+    }
+
+    /** 
+     * Metodo que sirve para generar el codigo de la orden de trabajo
+     * 
+     * @param \Minsal\sifdaBundle\Entity\CtlDependenciaEstablecimiento $idDependenciaEstablecimiento
+     * 
+     * @return string
+     */
+    public function generarCodigoOrden(\Minsal\sifdaBundle\Entity\CtlDependenciaEstablecimiento $idDependenciaEstablecimiento) 
+    {
+        $codigo = "";
+        $dependencia = $idDependenciaEstablecimiento->getIdDependencia()->getNombre();
+        $establecimiento = $idDependenciaEstablecimiento->getIdEstablecimiento()->getNombre();
+        
+        $codigo.= substr($establecimiento, 0, 3);
+        $codigo.= substr($dependencia, 0, 2);
+        $codigo = strtoupper($codigo);        
+        
+        $fechaActual = new \DateTime();
+        $dql = "SELECT count(u.codigo) cantidad
+			  FROM MinsalsifdaBundle:SifdaOrdenTrabajo u
+			  WHERE u.codigo LIKE :codigo";
+                  
+        $em = $this->getDoctrine()->getManager();
+        $cantidadCodigos= $em->createQuery($dql)
+                             ->setParameter(':codigo', $codigo.'___'.$fechaActual->format('y'))
+                             ->getResult();
+        $cantidad = $cantidadCodigos[0]['cantidad'] + 1;
+        
+        switch ($cantidad){
+            case ($cantidad < 10):
+                $codigo.= "00".$cantidad;
+                break;
+            case ($cantidad >= 10 and $cantidad < 100):
+                $codigo.= "0".$cantidad;
+                break;
+            default:
+                $codigo.= $cantidad;
+                break;
+        }
+        
+        $codigo.= $fechaActual->format('y');
+        
+        return $codigo;
     }
 }

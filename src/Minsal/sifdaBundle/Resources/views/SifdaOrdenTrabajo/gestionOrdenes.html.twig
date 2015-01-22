@@ -32,34 +32,35 @@
     <table id="tabla" class="table table-bordered table-hover table-condensed">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Descripcion</th>
-                <th>Codigo</th>
-                <th>Fechacreacion</th>
-                <th>Fechafinalizacion</th>
-                <th>Observacion</th>
-                <th>Actions</th>
+                <th><center>Correlativo</center></th>
+                <th><center>Descripcion</center></th>
+                <th><center>Codigo</center></th>
+                <th><center>Fecha de creacion</center></th>
+                <th><center>Fecha de finalizacion</center></th>
+                <th><center>Observacion</center></th>
+                <th><center>Acciones</center></th>
             </tr>
         </thead>
         <tbody>
+	{% set corr = 1 %}    
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('sifda_ordentrabajo_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td><center>{{ corr }}</center></td>
                 <td>{{ entity.descripcion }}</td>
                 <td>{{ entity.codigo }}</td>
-                <td>{% if entity.fechaCreacion %}{{ entity.fechaCreacion|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if entity.fechaFinalizacion %}{{ entity.fechaFinalizacion|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td><center>{% if entity.fechaCreacion %}{{ entity.fechaCreacion|date('d/m/Y') }}{% endif %}</center></td>
+                <td><center>{% if entity.fechaFinalizacion %}{{ entity.fechaFinalizacion|date('d/m/Y') }}{% endif %}</center></td>
                 <td>{{ entity.observacion }}</td>
                 <td>
                 <ul>
                     <li>
-                        <a href="{{ path('sifda_ordentrabajo_show', { 'id': entity.id }) }}">show</a>
+                       <a href="{{ path('sifda_ordentrabajo_edit', { 'id': entity.id }) }}">Modificar orden de trabajo</a>
                     </li>
                     <li>
-                        <a href="{{ path('sifda_ordentrabajo_edit', { 'id': entity.id }) }}">edit</a>
+                        <a href="{{ path('sifda_equipotrabajo_new', { 'id': entity.id }) }}">Asignar equipo de trabajo</a>
                     </li>
                     <li>
-                        <a href="{{ path('sifdainformeordentrabajo_new', { 'id': entity.id }) }}">nuevo Informe</a>
+                        <a href="{{ path('sifda_ordentrabajo_show', { 'id': entity.id }) }}">Mostrar equipo de trabajo</a>
                     </li>
                     <li>
                         <a href="{{ path('sifdainformeordentrabajo', { 'idOrd': entity.id }) }}">listar Informes</a>
@@ -67,6 +68,7 @@
                 </ul>
                 </td>
             </tr>
+	    {% set corr = corr + 1 %}
         {% endfor %}
         </tbody>
     </table>

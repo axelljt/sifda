@@ -447,15 +447,20 @@ class SifdaSolicitudServicioController extends Controller
     
     
     /**
-     * Rechazar una SifdaSolicitudServicio entity.
-     *
-     * @Route("/sifda/rechazar/{id}", name="sifda_solicitudservicio_rechazar")
-      * @Method("GET")
-     */
+    * Ajax utilizado para buscar rango de fechas
+    *  
+    * @Route("/sifda/rechazar", name="sifda_solicitudservicio_rechazar")
+    */
     
     
-    public function rechazaraction($id){
+    public function rechazaraction(){
         
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+        if($isAjax){
+            
+            $id = $this->get('request')->request->get('id');
+        
+            ladybug_dump($id);
         $res=0;
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('MinsalsifdaBundle:SifdaSolicitudServicio')->find($id);
@@ -477,16 +482,19 @@ class SifdaSolicitudServicioController extends Controller
                 $em->flush();
                 
                 $res=$estado;
-                  return $this->render('MinsalsifdaBundle:SifdaSolicitudServicio:rechazarSolicitudes.html.twig' , array('entity' =>$entity,'val'=>$res));
+//                  return $this->render('MinsalsifdaBundle:SifdaSolicitudServicio:rechazarSolicitudes.html.twig' , array('entity' =>$entity,'val'=>$res));
+                 return new Response('1');
+                  
             }     
             
          else 
              {
                 $res=$estado;
-                return $this->render('MinsalsifdaBundle:SifdaSolicitudServicio:rechazarSolicitudes.html.twig' , array('entity' =>$entity,'val'=>$res));
+//                return $this->render('MinsalsifdaBundle:SifdaSolicitudServicio:rechazarSolicitudes.html.twig' , array('entity' =>$entity,'val'=>$res));
+                return new Response('0');
              } 
 //                throw $this->createNotFoundException('No pude rechazar la solicitud.');
-            
+        }    
             
     } 
     

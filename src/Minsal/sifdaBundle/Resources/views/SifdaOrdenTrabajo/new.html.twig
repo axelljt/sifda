@@ -11,13 +11,13 @@
                 <div class="row-fluid">
                 <table id="tabla" class="table table-bordered table-hover table-condensed">
                     <tbody>
-                        <!--<tr>
-                            <th>Correlativo</th>
-                            <td>{#{ entity.id }#}</td>
-                        </tr>-->
                         <tr>
-                            <th>Dependencia que solicita el servicio</th>
-                            <td>{{ solicitud.idDependenciaEstablecimiento }}</td>
+                            <th>Establecimiento</th>
+                            <td>{{ solicitud.idDependenciaEstablecimiento.idEstablecimiento.nombre }}</td>
+                        </tr>
+                        <tr>
+                            <th>Dependencia</th>
+                            <td>{{ solicitud.idDependenciaEstablecimiento.idDependencia.nombre }}</td>
                         </tr>
                         <tr>
                             <th>Tipo de servicio</th>
@@ -39,49 +39,21 @@
                       
                 <div class="row-fluid">
                     <div class="span4 offset2">
-                        {{form_row(form.idDependenciaEstablecimiento, {'attr': {'class':'span7'} })}}
+                        {{form_row(form.establecimiento, {'attr': {'class':'span7'} })}}
+                        {{form_row(form.dependencia, {'attr': {'class':'span7'} })}}
+                        {{form_row(form.descripcion, {'attr': {'class':'input-xlarge', 'placeholder': 'Descripcion de la orden de trabajo'} })}}
                         {{form_row(form.fechaCreacion)}}
-                        {{form_row(form.observacion, {'attr': {'class':'input-xlarge', 'placeholder': 'Observacion sobre la orden de trabajo'} })}}
-                        {{form_row(form.idEtapa)}}
                         {{form_row(form.idEstado)}}
-                        {#{prioridad.nombre}#}
                     </div>
                     <div class="span5 offset1"> 
-                        {{form_row(form.descripcion, {'attr': {'class':'input-xlarge', 'placeholder': 'Descripcion de la orden de trabajo'} })}}
-                        {{form_row(form.fechaFinalizacion)}}
+                        {{form_row(form.idEtapa)}}
                         {{form_row(form.idPrioridad)}}
-                        {{form_row(form.codigo)}}
-                        {#{form_row(form.idSolicitudServicio)}#}
+                        {{form_row(form.observacion, {'attr': {'class':'input-xlarge', 'placeholder': 'Observacion sobre la orden de trabajo'} })}}
+                        {{form_row(form.fechaFinalizacion)}}
                     </div>
                 </div>
-            <br><br>    
-            <div class="row-fluid">
-                <div class="span12">
-                    <h4>Seleccionar equipo de trabajo</h4>
-                    <br>
-                    <table id="tabla" class="table table-bordered table-hover table-condensed" cellspacing="0" width="100%">
-                        <thead>
-                            <tr>
-                                <th>Correlativo</th>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for entity in empleados %}
-                                <tr>
-                                    <td>{{ entity.id }}</td>
-                                    <td>{{ entity.nombre }}</td>
-                                    <td>{{ entity.apellido }}</td>
-                                    
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-                    <br>
-                    <div class="row-fluid">    
+            	<br><br>
+		<div class="row-fluid">    
                         <div class="span12">
                         <br>
                         <center>
@@ -96,13 +68,6 @@
                         <br>
                         </div>
                     </div>
-                <!--<ul class="record_actions">
-                    <li>
-                        <a href="{#{ path('sifda_ordentrabajo') }#}">
-                            Regresar al listado
-                        </a>
-                    </li>
-                </ul>-->
             </div>
         </div>
     {{form_end(form)}}        

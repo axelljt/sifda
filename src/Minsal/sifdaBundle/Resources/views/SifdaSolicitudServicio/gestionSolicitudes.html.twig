@@ -60,18 +60,30 @@
                         <a  href="{{ path('sifda_ordentrabajo_new', { 'id': entity.id }) }}">Crear orden de trabajo</a>
                     </li>
                     <li>                        
-                        <a  href="{{ path('sifda_solicitudservicio_rechazar', { 'id': entity.id }) }}">Rechazar solicitud de servicio</a>
+                        {#<a  href="{{ path('sifda_solicitudservicio_rechazar', { 'id': entity.id }) }} javascript:confirmar();">Rechazar solicitud de servicio</a>#}
+                        {#<a  href="javascript:confirmar({{ loop.index }});">Rechazar solicitud de servicio</a>#}
+                        
+                            
+                        <a  href="javascript:ShowDialog({{ loop.index }});">Rechazar solicitud de servicio</a>
+                        <input type="hidden" id="txt{{ loop.index }}"  value="{{entity.id}}">
+                        
                     </li>
                     <li>                        
-                        <a  href="{{ path('sifda_solicitudservicio_delete2', { 'id': entity.id }) }}">Reprogramar solicitud de servicio</a>
+                        <a  href="{{ path('sifda_solicitudservicio_delete2', { 'id': entity.id }) }} ">Reprogramar solicitud de servicio</a>    
                     </li>
-                </ul>
+                    
+                  </ul>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
         
+        <div id="dialogConfirm">
+            <span id="spanMessage"></span>
+
+        </div>
+         
         
     {% endblock %}
 
@@ -136,6 +148,10 @@
              }, "json");
             
         });
+        
+        
+  
+        
     });
     
     
@@ -192,7 +208,79 @@
     }
     
     
+    function confirmar(valor){ 
+        
+        {#var id= $("#txt"+valor).val();#}
+        
+        {#alert('id enviado: '+id);#}
+        confirmar=confirm("Desea Rechazar la Solicitud?"); 
+        if (confirmar)
+            LlamarControlador('{{path('sifda_solicitudservicio_rechazar')}}',$("#txt"+valor).val());
+        // si pulsamos en aceptar
+            {#{
+                $.post(
+                '{{path('sifda_solicitudservicio_rechazar')}}',         
+                 { 
+                    id:$("#txt"+valor).val(),
+                    
+                 }
+                 , function( data ) {
+                console.log( data );
+                    $("#rangoTabla").html(data);
+                
+             }, "json");      
+             
+             alert("Solicitud Rechazada Exitosamente ");
+            }#}
+           {# alert('{{path(sifda_solicitudservicio_rechazar),'id':}}');   
+           '{{ path('sifda_solicitudservicio_rechazar', { 'id': valor }) }}';#}
+         
+        
+        else 
+        // si pulsamos en cancelar
+        alert('Has dicho que no'); 
     
+    
+}  
+    
+    function LlamarControlador(url,valor)
+    {
+        $.post(
+            url,
+            {
+                id:valor,
+            }).done(function(){
+                {#alert("Solicitud Rechazada Exitosamente");#}
+                $('#dialog').attr('title','Confirmacion').text('Solicitud Rechazada Correctamente').dialog();    
+            });
+    }
+    
+    
+    /*Codigo para nueva ventana*/
+  function ShowDialog(valor) {
+        $('#spanMessage').html('¿Está seguro(a) de Rechazar la Solicitud?');
+        $("#dialogConfirm").dialog({
+            resizable: false,
+            height: 160,
+            width: 300,
+            modal: true,
+            title: 'Confirmacion',
+            buttons: {
+                'Aceptar': function () {
+                    {#alert('{{path('sifda_solicitudservicio_rechazar')}}');#}
+                    {#alert($("#txt"+valor).val());#}
+                    LlamarControlador('{{path('sifda_solicitudservicio_rechazar')}}',$("#txt"+valor).val());
+                    {#$("<div><span>Solicitud Rechazada correctamente</span></div>").appendTo(document.body);#}
+                    $(this).dialog("close");
+                },
+                    'Cancelar': function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    }
+   
+   /*Fin del codigo de ventana*/
     
     </script>
     {% endblock%}

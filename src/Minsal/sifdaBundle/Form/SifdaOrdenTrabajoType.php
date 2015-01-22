@@ -5,6 +5,7 @@ namespace Minsal\sifdaBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Doctrine\ORM\EntityRepository;
 
 class SifdaOrdenTrabajoType extends AbstractType
 {
@@ -16,23 +17,50 @@ class SifdaOrdenTrabajoType extends AbstractType
     {
         $builder
             ->add('descripcion')
-            ->add('codigo')
-            ->add('fechaCreacion','date',array('input'=>'datetime','widget'=>'single_text',
-                  'format'=>'yyyy-MM-dd','attr'=>array('class'=>'date')))
-            ->add('fechaFinalizacion','date',array('input'=>'datetime','widget'=>'single_text',
-                  'format'=>'yyyy-MM-dd','attr'=>array('class'=>'date')))
+            ->add('fechaCreacion','date',array(
+                  'input'  =>  'datetime',
+                  'widget' =>  'single_text',
+                  'format' =>  'yy-MM-dd',
+                  'attr'   =>  array('class'=>'date')
+            ))
+            ->add('fechaFinalizacion','date',array(
+                  'input'  =>  'datetime',
+                  'widget' =>  'single_text',
+                  'format' =>  'yy-MM-dd',
+                  'attr'   =>  array('class'=>'date')
+            ))
             ->add('observacion')
-            ->add('idPrioridad')
-            ->add('idEstado')
-            ->add('idDependenciaEstablecimiento')
-            ->add('idEtapa')
-            //>add('responsable', 'entity',
-            //    array('required' => false,
-            //        'label' => 'Responsable',
-            //        'class' => 'MinsalsifdaBundle:CtlEmpleado',
-            //        'property' => 'responsable'
-        //));    
-            //->add('idSolicitudServicio')
+            ->add('idPrioridad', 'entity', array(
+                    'required'      =>  true,
+                    'label'         =>  'Prioridad',    
+                    'class'         =>  'MinsalsifdaBundle:CatalogoDetalle',
+                    'query_builder' =>  function(EntityRepository $repositorio) {
+                return $repositorio
+                        ->createQueryBuilder('dcat')
+                        ->where('dcat.idCatalogo = 3');
+            }))
+            ->add('idEstado', 'entity', array(
+                    'required'      =>  true,
+                    'label'         =>  'Estado',
+                    'class'         =>  'MinsalsifdaBundle:CatalogoDetalle',
+                    'query_builder' =>  function(EntityRepository $repositorio) {
+                return $repositorio
+                        ->createQueryBuilder('dcat')
+                        ->where('dcat.idCatalogo = 2');
+            }))
+            ->add('dependencia', 'entity', array(
+                    'label'         =>  'Dependencia',
+                    'class'         =>  'MinsalsifdaBundle:CtlDependencia',
+                    'mapped' => false
+                ))
+            ->add('establecimiento', 'entity', array(
+                    'label'         =>  'Establecimiento',
+                    'class'         =>  'MinsalsifdaBundle:CtlEstablecimiento',
+                    'mapped' => false
+                ))
+            ->add('idEtapa', 'entity', array(
+                    'label'         =>  'Etapa a realizar',
+                    'class'         =>  'MinsalsifdaBundle:SifdaRutaCicloVida'))
         ;
     }
     

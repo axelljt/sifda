@@ -767,13 +767,13 @@ ALTER TABLE public.sifda_ruta OWNER TO sifda;
 
 CREATE TABLE sifda_ruta_ciclo_vida (
     id integer NOT NULL,
-    id_ruta integer,
+    id_ruta integer NOT NULL,
+    id_etapa integer,
     descripcion character varying(100) NOT NULL,
     ref1 character varying(20),
     jerarquia integer NOT NULL,
     ignorar_sig boolean NOT NULL,
-    peso integer NOT NULL,
-    id_etapa integer
+    peso integer NOT NULL
 );
 
 
@@ -978,6 +978,7 @@ SELECT pg_catalog.setval('bitacora_id_seq', 1, false);
 COPY catalogo (id, nombre, descripcion, sistema, ref1) FROM stdin;
 1	Medio	Es el medio por el cual solicita un servicio	1	medio solicita
 2	Estados	Muestra los catalogos 1	1	formas del servicio
+3	Prioridad	Muestra la prioridad de una actividad	1	prioridad actividad
 \.
 
 
@@ -993,6 +994,10 @@ COPY catalogo_detalle (id, id_catalogo, descripcion, ref1, estatus) FROM stdin;
 5	1	Sistema		t
 6	1	PAO		t
 7	1	Verbal		t
+8	3	Alta		t
+9	3	Media	' '	t
+10	3	Baja		t
+11	3	Urgente		t
 \.
 
 
@@ -1016,6 +1021,7 @@ SELECT pg_catalog.setval('catalogo_id_seq', 1, true);
 
 COPY ctl_cargo (id, nombre) FROM stdin;
 1	Técnico 1
+2	Programador
 \.
 
 
@@ -1137,10 +1143,8 @@ COPY ctl_dependencia (id, id_tipo_dependencia, nombre) FROM stdin;
 --
 
 COPY ctl_dependencia_establecimiento (id, id_establecimiento, id_dependencia, id_dependencia_padre, abreviatura, habilitado) FROM stdin;
-1	1	1	1	DTIC      	t
 2	2	1	\N	\N	t
 3	2	3	\N	\N	t
-4	2	4	\N	\N	t
 5	2	5	\N	\N	t
 6	2	7	\N	\N	t
 7	2	8	\N	\N	t
@@ -2239,6 +2243,8 @@ COPY ctl_dependencia_establecimiento (id, id_establecimiento, id_dependencia, id
 1099	645	76	\N	\N	t
 1100	645	98	\N	\N	t
 1101	645	99	\N	\N	t
+4	2	4	\N	\N	t
+1	7	4	\N	DTIC      	t
 \.
 
 
@@ -2262,6 +2268,10 @@ SELECT pg_catalog.setval('ctl_dependencia_id_seq', 1, true);
 
 COPY ctl_empleado (id, id_dependencia_establecimiento, id_cargo, nombre, apellido, fecha_nacimiento, correo_electronico) FROM stdin;
 1	1	1	Juan	Roque	1985-01-12	roquej@gmail.com
+2	1	2	Saul	Aguilar	1991-08-09	saguilar@yahoo.es
+3	1	2	Carolina	Perez	1972-06-11	cperez@salud.gob
+5	1	2	Oscar	Jimenez	1979-10-21	jimenez.osc979@gmail.com
+4	1	2	Leticia	Salamanca	1988-04-12	letty.sal@gmail.com
 \.
 
 
@@ -2277,7 +2287,6 @@ SELECT pg_catalog.setval('ctl_empleado_id_seq', 1, false);
 --
 
 COPY ctl_establecimiento (id, nombre) FROM stdin;
-1	Establecimiento uno
 2	Ministerio de Salud
 3	Región Central
 4	Región Paracentral
@@ -2920,6 +2929,7 @@ COPY ctl_establecimiento (id, nombre) FROM stdin;
 643	ENTIDADES GUBERNAMENTALES
 644	FONDO SOLIDARIO PARA LA SALUD(FOSALUD)
 645	HOSPITAL NACIONAL FRANCISCO MENENDEZ
+1	Establecimiento general
 \.
 
 
@@ -3083,6 +3093,35 @@ SELECT pg_catalog.setval('sifda_detalle_solicitud_servicio_id_seq', 1, false);
 --
 
 COPY sifda_equipo_trabajo (id, id_orden_trabajo, id_empleado, responsable_equipo) FROM stdin;
+1	3	1	t
+2	1	2	t
+3	2	4	t
+4	13	2	t
+15	24	3	t
+16	24	2	f
+18	25	2	t
+19	25	1	f
+20	25	3	f
+21	25	5	f
+17	24	5	f
+22	14	5	t
+23	14	4	f
+6	22	1	f
+7	22	3	f
+5	22	4	t
+8	10	3	t
+9	10	1	f
+10	10	2	f
+11	10	4	f
+12	10	5	f
+13	21	1	t
+14	21	3	f
+24	6	2	t
+25	6	4	f
+26	5	3	t
+27	27	2	t
+28	27	5	f
+29	27	4	f
 \.
 
 
@@ -3090,7 +3129,7 @@ COPY sifda_equipo_trabajo (id, id_orden_trabajo, id_empleado, responsable_equipo
 -- Name: sifda_equipo_trabajo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sifda
 --
 
-SELECT pg_catalog.setval('sifda_equipo_trabajo_id_seq', 1, false);
+SELECT pg_catalog.setval('sifda_equipo_trabajo_id_seq', 29, true);
 
 
 --
@@ -3098,6 +3137,7 @@ SELECT pg_catalog.setval('sifda_equipo_trabajo_id_seq', 1, false);
 --
 
 COPY sifda_informe_orden_trabajo (id, id_empleado, id_orden_trabajo, id_subactividad, id_dependencia_establecimiento, id_etapa, detalle, fecha_realizacion, fecha_registro, terminado) FROM stdin;
+1	1	1	\N	1	1	xxxxxxxxxxxxx	2014-11-09	2014-11-10	t
 \.
 
 
@@ -3105,7 +3145,7 @@ COPY sifda_informe_orden_trabajo (id, id_empleado, id_orden_trabajo, id_subactiv
 -- Name: sifda_informe_orden_trabajo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sifda
 --
 
-SELECT pg_catalog.setval('sifda_informe_orden_trabajo_id_seq', 1, false);
+SELECT pg_catalog.setval('sifda_informe_orden_trabajo_id_seq', 1, true);
 
 
 --
@@ -3113,6 +3153,33 @@ SELECT pg_catalog.setval('sifda_informe_orden_trabajo_id_seq', 1, false);
 --
 
 COPY sifda_orden_trabajo (id, id_solicitud_servicio, id_estado, id_etapa, id_dependencia_establecimiento, id_prioridad, descripcion, codigo, fecha_creacion, fecha_finalizacion, observacion) FROM stdin;
+14	2	2	14	4	11	xcxcxcxcxc	MINUN00115	2015-01-03	2015-01-16	dddddd
+13	2	2	9	4	9	plmokn	MINUN00114	2014-11-13	2015-02-13	qazwsx
+15	2	2	23	4	10	edcryhnu	MINDI00515	2015-01-01	2016-02-12	yhnu
+17	2	2	1	4	10	DDDS	MINDI00615	2015-01-16	2015-03-20	DSDDD
+18	2	2	18	4	9	c	MINDI00715	2015-01-20	2015-11-14	ff
+21	2	2	1	9	8	dvvc	MINAL00115	2015-01-08	2015-01-29	dd
+19	2	2	5	19	9	dfdfdfdfd	MINDI00815	2015-01-01	2015-05-15	dsdd
+20	2	2	17	19	9	fdfdfdf	MINDI00915	2015-01-06	2015-02-14	ddsddd
+22	3	2	12	9	8	cfddf	MINAL00215	2015-01-02	2015-01-09	adf
+23	2	2	14	19	11	dddd	MINDI01015	2015-01-06	2015-01-27	ewewewe
+24	2	2	4	19	8	jkl	MINDI01115	2015-01-02	2015-01-30	dfg
+25	2	2	1	7	9	ewewewe	MINCL00115	2015-01-21	2015-04-03	sdddddd
+26	2	2	17	7	8	dddadadas	MINCL00215	2015-01-02	2015-04-24	dfgvdfdf
+27	2	2	13	7	10	dddd	MINCL00315	2015-01-01	2015-01-31	ddds
+5	2	2	29	7	10	tabular resultados	MINDE00115	2015-01-07	2015-03-27	\N
+1	2	2	1	4	9	realizar un analisis del sistema a desarrolar	MINFA00113	2013-11-13	\N	debe ir a la unidad
+2	2	2	2	1	11	daddad	MINFA00213	2013-12-13	2014-12-22	qwertyuiop
+4	3	2	12	1	8	Diseno de bd	MINDE00114	2014-01-02	2015-02-28	las llaves primarias deben ser id
+3	2	4	3	1	10	dsddd	MINFA00114	2014-01-01	2015-11-13	\N
+16	2	2	3	4	10	vvdvbfdvfvd	MINDI00114	2014-11-04	2015-01-15	vdfdgbgfbgf
+6	2	1	19	27	8	elaborar manual	MINDI00115	2015-01-09	2015-01-31	debe seguir std
+7	2	1	18	13	8	sssssssssssss	MINDI00215	2015-01-01	2015-02-19	ssssssssssssss
+8	2	1	17	18	10	ddadas	MINDI00315	2015-01-06	2015-01-20	ddsd
+9	2	2	1	4	8	dsddd	MINDI00415	2015-01-02	2015-01-27	dcfddscd
+12	2	2	15	4	8	mnbv	MINGE00115	2015-01-11	2015-06-26	zxcv
+10	2	2	30	4	9	ddssss	MINGE00114	2014-01-13	2015-01-28	cdcdcd
+11	2	2	1	4	8	adf	MINGE00214	2014-11-04	2015-07-10	qwert
 \.
 
 
@@ -3120,7 +3187,7 @@ COPY sifda_orden_trabajo (id, id_solicitud_servicio, id_estado, id_etapa, id_dep
 -- Name: sifda_orden_trabajo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sifda
 --
 
-SELECT pg_catalog.setval('sifda_orden_trabajo_id_seq', 1, false);
+SELECT pg_catalog.setval('sifda_orden_trabajo_id_seq', 27, true);
 
 
 --
@@ -3173,7 +3240,10 @@ SELECT pg_catalog.setval('sifda_retraso_actividad_id_seq', 1, false);
 --
 
 COPY sifda_ruta (id, id_tipo_servicio, descripcion, tipo) FROM stdin;
-1	4	Primera entrega	Desarrollo de sistemas
+1	1	etapas y subetapas de desarrollo	etapas y subetapas
+3	10	adfqwert	Sistemas contables para UACI
+2	9	XXXXXXXXXXXXXXXXXXXX	Sistemas contables para ISSS
+5	12	asddffgghtrrtrt	Para unidades de salud
 \.
 
 
@@ -3181,9 +3251,40 @@ COPY sifda_ruta (id, id_tipo_servicio, descripcion, tipo) FROM stdin;
 -- Data for Name: sifda_ruta_ciclo_vida; Type: TABLE DATA; Schema: public; Owner: sifda
 --
 
-COPY sifda_ruta_ciclo_vida (id, id_ruta, descripcion, ref1, jerarquia, ignorar_sig, peso, id_etapa) FROM stdin;
-1	1	Prueba piloto	\N	1	t	20	\N
-2	1	primera activdad	\N	1	t	33	1
+COPY sifda_ruta_ciclo_vida (id, id_ruta, id_etapa, descripcion, ref1, jerarquia, ignorar_sig, peso) FROM stdin;
+1	1	\N	Analisis	\N	1	f	30
+3	1	\N	Construccion	\N	3	f	20
+2	1	\N	Diseno	\N	2	f	15
+4	1	\N	Pruebas	\N	4	f	15
+5	1	\N	Documentacion	\N	5	f	10
+7	1	1	Analisis situacion actual	\N	1	f	10
+6	1	\N	Implementacion	\N	6	t	10
+8	1	1	Analisis y determinacion de requerimientos	\N	2	t	20
+9	1	2	Estandares	\N	1	f	5
+10	1	2	Bases de datos	\N	2	f	5
+11	1	2	Entradas, salidas y procesos	\N	3	t	5
+12	1	3	Salidas	\N	1	f	5
+13	1	3	Entradas	\N	2	f	5
+14	1	3	Procesos	\N	3	f	5
+16	1	4	Unitarias	\N	1	f	10
+15	1	3	Documentacion	\N	4	t	5
+17	1	4	Funcionales	\N	2	t	5
+18	1	5	Manual de usuario	\N	1	f	3
+19	1	5	Manual Tecnico	\N	2	f	4
+20	1	5	Manual de Instalacion	\N	3	t	3
+21	1	6	Realizar implementacion	\N	1	t	10
+22	1	\N	wwwww	ddd	44	t	12
+23	1	\N	qwe	dddf	3	t	2
+24	3	\N	Analisis del sistema contable	analisis de costos	1	t	20
+25	3	\N	Requerimientos del sistema contable	deben ser aprobados	2	t	10
+26	3	\N	diseno del sistema	diseno	3	t	15
+27	3	\N	construccion	programacion en php	4	t	15
+28	3	24	situacion actual	atraves de encuestas	1	t	5
+29	3	24	tabulacion	por excel	2	t	5
+30	3	24	Validacion requerimientos	realizar documento	3	t	5
+31	5	\N	Analisis situacion actual	analisis	1	t	4
+32	5	\N	diseno	diseno	2	t	20
+33	5	31	situacion actual	sssss	1	t	10
 \.
 
 
@@ -3191,14 +3292,14 @@ COPY sifda_ruta_ciclo_vida (id, id_ruta, descripcion, ref1, jerarquia, ignorar_s
 -- Name: sifda_ruta_ciclo_vida_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sifda
 --
 
-SELECT pg_catalog.setval('sifda_ruta_ciclo_vida_id_seq', 2, true);
+SELECT pg_catalog.setval('sifda_ruta_ciclo_vida_id_seq', 33, true);
 
 
 --
 -- Name: sifda_ruta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sifda
 --
 
-SELECT pg_catalog.setval('sifda_ruta_id_seq', 1, true);
+SELECT pg_catalog.setval('sifda_ruta_id_seq', 5, true);
 
 
 --
@@ -3206,7 +3307,8 @@ SELECT pg_catalog.setval('sifda_ruta_id_seq', 1, true);
 --
 
 COPY sifda_solicitud_servicio (id, id_tipo_servicio, user_id, id_dependencia_establecimiento, id_estado, id_medio_solicita, descripcion, fecha_recepcion, fecha_requiere) FROM stdin;
-8	1	1	1	3	5	a	2015-01-09	2015-01-15
+2	1	2	1	1	5	Sistema contable	2014-11-12	2015-01-07
+3	1	2	1	1	5	pagina web para las farmacias	2014-11-12	2014-12-29
 \.
 
 
@@ -3214,7 +3316,7 @@ COPY sifda_solicitud_servicio (id, id_tipo_servicio, user_id, id_dependencia_est
 -- Name: sifda_solicitud_servicio_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sifda
 --
 
-SELECT pg_catalog.setval('sifda_solicitud_servicio_id_seq', 8, true);
+SELECT pg_catalog.setval('sifda_solicitud_servicio_id_seq', 3, true);
 
 
 --
@@ -3255,7 +3357,15 @@ COPY sifda_tipo_servicio (id, id_actividad, nombre, descripcion) FROM stdin;
 1	1	Desarrollo de sistemas	Desarrollar un sistema con su ciclo de vida
 2	1	sistema contable de la Dir. de Regulacion	contara con catalogos, estado de resultados, balances, entre otros
 3	1	Sistema de contabilidad para UFI	el desarrollo de este sistema incluye contabilidad gnal y de costos
-4	1	Desarrollo de sistemas	Primera entrega
+4	1	Desarrollo de aplicacion movil	Desarrollo de aplicacion movil para movimientos contables
+5	1	aplicacion movil para costeo	desarrollo  de aplicacion movil para q se pueda visualizar la forma de costeo
+6	1	xxxxx	yyyyyyyyyyyyyyyy
+7	1	Sistemas contables para ISSS	XXXXXXXXXXXXXXXXXXXX
+8	1	Sistemas contables para ISSS	XXXXXXXXXXXXXXXXXXXX
+9	1	Sistemas contables para ISSS	XXXXXXXXXXXXXXXXXXXX
+10	1	Sistemas contables para UACI	adfqwert
+11	1	Sistema de contabilidad para unidades de salud	asddffgghtrrtrt
+12	1	Para unidades de salud	asddffgghtrrtrt
 \.
 
 
@@ -3263,7 +3373,7 @@ COPY sifda_tipo_servicio (id, id_actividad, nombre, descripcion) FROM stdin;
 -- Name: sifda_tipo_servicio_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sifda
 --
 
-SELECT pg_catalog.setval('sifda_tipo_servicio_id_seq', 4, true);
+SELECT pg_catalog.setval('sifda_tipo_servicio_id_seq', 12, true);
 
 
 --
@@ -3683,10 +3793,52 @@ CREATE INDEX gestiona_fk ON sidpla_subactividad USING btree (id_empleado);
 
 
 --
--- Name: idx_26b328fec1b7f0f4; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
+-- Name: idx_bitacora; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
 --
 
-CREATE INDEX idx_26b328fec1b7f0f4 ON sifda_ruta_ciclo_vida USING btree (id_etapa);
+CREATE UNIQUE INDEX idx_bitacora ON bitacora USING btree (id);
+
+
+--
+-- Name: idx_catalogo; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
+--
+
+CREATE UNIQUE INDEX idx_catalogo ON catalogo USING btree (id);
+
+
+--
+-- Name: idx_catalogo_detalle; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
+--
+
+CREATE UNIQUE INDEX idx_catalogo_detalle ON catalogo_detalle USING btree (id);
+
+
+--
+-- Name: idx_ctl_cargo; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
+--
+
+CREATE UNIQUE INDEX idx_ctl_cargo ON ctl_cargo USING btree (id);
+
+
+--
+-- Name: idx_ctl_dependencia; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
+--
+
+CREATE UNIQUE INDEX idx_ctl_dependencia ON ctl_dependencia USING btree (id);
+
+
+--
+-- Name: idx_ctl_establecimiento; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
+--
+
+CREATE UNIQUE INDEX idx_ctl_establecimiento ON ctl_establecimiento USING btree (id);
+
+
+--
+-- Name: idx_ctl_tipo_dependencia; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
+--
+
+CREATE UNIQUE INDEX idx_ctl_tipo_dependencia ON ctl_tipo_dependencia USING btree (id);
 
 
 --
@@ -3701,6 +3853,13 @@ CREATE INDEX idx_depen_estab ON ctl_empleado USING btree (id_dependencia_estable
 --
 
 CREATE INDEX idx_det_orden_trabajo ON sifda_detalle_solicitud_orden USING btree (id_orden_trabajo);
+
+
+--
+-- Name: idx_det_solic_serv; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
+--
+
+CREATE UNIQUE INDEX idx_det_solic_serv ON sifda_detalle_solicitud_orden USING btree (id);
 
 
 --
@@ -3781,10 +3940,66 @@ CREATE INDEX idx_id_evento ON bitacora USING btree (id_evento);
 
 
 --
+-- Name: idx_id_ruta_etapa; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
+--
+
+CREATE INDEX idx_id_ruta_etapa ON sifda_ruta_ciclo_vida USING btree (id_etapa);
+
+
+--
+-- Name: idx_reprogramacion_servicio; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
+--
+
+CREATE UNIQUE INDEX idx_reprogramacion_servicio ON sifda_reprogramacion_servicio USING btree (id);
+
+
+--
+-- Name: idx_sidpla_actividad; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
+--
+
+CREATE UNIQUE INDEX idx_sidpla_actividad ON sidpla_actividad USING btree (id);
+
+
+--
+-- Name: idx_sidpla_linea_estrategica; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
+--
+
+CREATE UNIQUE INDEX idx_sidpla_linea_estrategica ON sidpla_linea_estrategica USING btree (id);
+
+
+--
 -- Name: idx_sidpla_subactividad; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
 --
 
 CREATE UNIQUE INDEX idx_sidpla_subactividad ON sidpla_subactividad USING btree (id);
+
+
+--
+-- Name: idx_sifda_informe_orden_trabajo; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
+--
+
+CREATE UNIQUE INDEX idx_sifda_informe_orden_trabajo ON sifda_informe_orden_trabajo USING btree (id);
+
+
+--
+-- Name: idx_sifda_orden_trabajo; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
+--
+
+CREATE UNIQUE INDEX idx_sifda_orden_trabajo ON sifda_orden_trabajo USING btree (id);
+
+
+--
+-- Name: idx_sifda_recurso_servicio; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
+--
+
+CREATE UNIQUE INDEX idx_sifda_recurso_servicio ON sifda_recurso_servicio USING btree (id);
+
+
+--
+-- Name: idx_sifda_retraso_actividad; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
+--
+
+CREATE UNIQUE INDEX idx_sifda_retraso_actividad ON sifda_retraso_actividad USING btree (id);
 
 
 --
@@ -3802,6 +4017,13 @@ CREATE UNIQUE INDEX idx_sifda_ruta_ciclo_vida ON sifda_ruta_ciclo_vida USING btr
 
 
 --
+-- Name: idx_sifda_solicitud_servicio; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
+--
+
+CREATE UNIQUE INDEX idx_sifda_solicitud_servicio ON sifda_solicitud_servicio USING btree (id);
+
+
+--
 -- Name: idx_sifda_tipo_recurso; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
 --
 
@@ -3809,10 +4031,45 @@ CREATE UNIQUE INDEX idx_sifda_tipo_recurso ON sifda_tipo_recurso USING btree (id
 
 
 --
+-- Name: idx_sifda_tipo_servicio; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
+--
+
+CREATE UNIQUE INDEX idx_sifda_tipo_servicio ON sifda_tipo_servicio USING btree (id);
+
+
+--
+-- Name: idx_sifda_tracking_estado; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
+--
+
+CREATE UNIQUE INDEX idx_sifda_tracking_estado ON sifda_tracking_estado USING btree (id);
+
+
+--
+-- Name: idx_tipo_recurso_dependencia; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
+--
+
+CREATE UNIQUE INDEX idx_tipo_recurso_dependencia ON sifda_tipo_recurso_dependencia USING btree (id);
+
+
+--
 -- Name: idx_user_id; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
 --
 
 CREATE INDEX idx_user_id ON bitacora USING btree (user_id);
+
+
+--
+-- Name: index_catalogo_detalle; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_catalogo_detalle ON catalogo_detalle USING btree (id);
+
+
+--
+-- Name: indx_sifda_tipo_servicio; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
+--
+
+CREATE UNIQUE INDEX indx_sifda_tipo_servicio ON sifda_tipo_servicio USING btree (id);
 
 
 --
@@ -3935,6 +4192,27 @@ CREATE INDEX trabaja_fk ON ctl_empleado USING btree (id_dependencia_establecimie
 
 
 --
+-- Name: uniq_583d1f3e5e237e06; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
+--
+
+CREATE UNIQUE INDEX uniq_583d1f3e5e237e06 ON fos_user_group USING btree (name);
+
+
+--
+-- Name: uniq_c560d76192fc23a8; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
+--
+
+CREATE UNIQUE INDEX uniq_c560d76192fc23a8 ON fos_user_user USING btree (username_canonical);
+
+
+--
+-- Name: uniq_c560d761a0d96fbf; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
+--
+
+CREATE UNIQUE INDEX uniq_c560d761a0d96fbf ON fos_user_user USING btree (email_canonical);
+
+
+--
 -- Name: utiliza_fk; Type: INDEX; Schema: public; Owner: sifda; Tablespace: 
 --
 
@@ -3946,14 +4224,6 @@ CREATE INDEX utiliza_fk ON sifda_tipo_recurso_dependencia USING btree (id_depend
 --
 
 CREATE INDEX valora_fk ON sifda_recurso_servicio USING btree (id_informe_orden_trabajo);
-
-
---
--- Name: fk_26b328fec1b7f0f4; Type: FK CONSTRAINT; Schema: public; Owner: sifda
---
-
-ALTER TABLE ONLY sifda_ruta_ciclo_vida
-    ADD CONSTRAINT fk_26b328fec1b7f0f4 FOREIGN KEY (id_etapa) REFERENCES sifda_ruta_ciclo_vida(id);
 
 
 --
@@ -4234,6 +4504,14 @@ ALTER TABLE ONLY sifda_informe_orden_trabajo
 
 ALTER TABLE ONLY sifda_tracking_estado
     ADD CONSTRAINT fk_orden_tracking FOREIGN KEY (id_orden_trabajo) REFERENCES sifda_orden_trabajo(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: fk_ruta_ciclo_etapa; Type: FK CONSTRAINT; Schema: public; Owner: sifda
+--
+
+ALTER TABLE ONLY sifda_ruta_ciclo_vida
+    ADD CONSTRAINT fk_ruta_ciclo_etapa FOREIGN KEY (id_etapa) REFERENCES sifda_ruta_ciclo_vida(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --
