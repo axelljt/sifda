@@ -93,7 +93,8 @@
     <script>
     $(document).ready(function(){
         
-        var estado= {{dependencias}};
+       var estado= {{dependencias}};
+       {#alert('{{dependencias}}');#}
                 
             if(estado!=0)
                 $('#dialog').attr('title','saved').text('Hay {{dependencias}} solicitudes Nuevas').dialog(); 

@@ -64,7 +64,10 @@ class SifdaSolicitudServicioController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('MinsalsifdaBundle:SifdaSolicitudServicio')->findAll();
+        $objEstado = $em->getRepository('MinsalsifdaBundle:CatalogoDetalle')->find(1);
+        $entities = $em->getRepository('MinsalsifdaBundle:SifdaSolicitudServicio')->findBy(array(
+                                                                                    'idEstado' => $objEstado
+                                                                                ));
 
         return array(
             'entities' => $entities,
@@ -250,8 +253,8 @@ class SifdaSolicitudServicioController extends Controller
           if($estado == "Ingresado")
           
               return $this->render('MinsalsifdaBundle:SifdaSolicitudServicio:showEstado2.html.twig' , array('entity' =>$entity, 'dependencia'=>$dependencia));
-//              return $this->renderView('MinsalsifdaBundle:SifdaSolicitudServicio:ShowEstado2.html.twig', array('entity' =>$entity));
-//          
+
+
           elseif($estado == "Asignado")
                 return $this->render('MinsalsifdaBundle:SifdaSolicitudServicio:showEstado3.html.twig' , array('entity' =>$entity, 'dependencia'=>$dependencia));
           
@@ -260,8 +263,7 @@ class SifdaSolicitudServicioController extends Controller
           
           elseif($estado == "Finalizado")
                 return $this->render('MinsalsifdaBundle:SifdaSolicitudServicio:showEstado5.html.twig' , array('entity' =>$entity, 'dependencia'=>$dependencia));
-//               return $this->renderView('MinsalsifdaBundle:SifdaSolicitudServicio:ShowEstado.html.twig', array('entity' =>$entity));
-//        return $this->redirect($this->generateUrl('sifda_solicitudservicio', array('id' => $id)));        
+
     }
     
     
@@ -483,7 +485,9 @@ class SifdaSolicitudServicioController extends Controller
                 
                 $res=$estado;
 //                  return $this->render('MinsalsifdaBundle:SifdaSolicitudServicio:rechazarSolicitudes.html.twig' , array('entity' =>$entity,'val'=>$res));
-                 return new Response('1');
+                    //return $this->redirect($this->generateUrl('sifda_gestionSolicitudes'));
+                    
+                return new Response('1');
                   
             }     
             
@@ -491,7 +495,7 @@ class SifdaSolicitudServicioController extends Controller
              {
                 $res=$estado;
 //                return $this->render('MinsalsifdaBundle:SifdaSolicitudServicio:rechazarSolicitudes.html.twig' , array('entity' =>$entity,'val'=>$res));
-                return new Response('0');
+//                return new Response('0');
              } 
 //                throw $this->createNotFoundException('No pude rechazar la solicitud.');
         }    

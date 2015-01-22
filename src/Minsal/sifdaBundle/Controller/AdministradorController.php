@@ -25,7 +25,7 @@ class AdministradorController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
+    public function index3Action()
     {
         $em = $this->getDoctrine()->getManager();
 

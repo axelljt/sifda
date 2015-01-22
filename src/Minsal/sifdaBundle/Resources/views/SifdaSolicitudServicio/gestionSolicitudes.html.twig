@@ -251,7 +251,9 @@
                 id:valor,
             }).done(function(){
                 {#alert("Solicitud Rechazada Exitosamente");#}
-                $('#dialog').attr('title','Confirmacion').text('Solicitud Rechazada Correctamente').dialog();    
+                 window.location='{{path('sifda_gestionSolicitudes')}}';   
+                ('#dialog').attr('title','Confirmacion').text('Solicitud Rechazada Correctamente').dialog();               
+                
             });
     }
     

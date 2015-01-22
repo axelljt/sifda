@@ -11,9 +11,7 @@
     
     {# cuadro Modal#}
     
-   
-    
-    
+      
     <center><h3>Mostrar solicitudes ingresadas</h3></center>
     <div id="seleccion">
         <div class="row-fluid">
@@ -83,8 +81,7 @@
             </tr>
         {% endfor %}
         
-      {{dependencias}}
-        </tbody>
+      </tbody>
     </table>
     {% endblock %}
 
@@ -93,10 +90,10 @@
     <script>
     $(document).ready(function(){
         
-        var estado= {{dependencias}};
+        {#var estado= {{dependencias}};
                 
             if(estado!=0)
-                $('#dialog').attr('title','saved').text('Hay {{dependencias}} solicitudes Nuevas').dialog(); 
+                $('#dialog').attr('title','saved').text('Hay {{dependencias}} solicitudes Nuevas').dialog(); #}
 
         document.getElementById('todos').checked=true;
         
@@ -198,11 +195,9 @@
 				}); 
     
     function mostrarvalores(){ 
-              var fi = $("#fechaInicio").val();
-        
-             var ff = $("#fechaFin").val();
-             //alert(fi);   
-             //alert(ff);
+              var fi = $("#fechaInicio").val();  
+              var ff = $("#fechaFin").val();
+             
     }
     
     
