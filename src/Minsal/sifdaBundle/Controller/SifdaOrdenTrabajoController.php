@@ -47,8 +47,10 @@ class SifdaOrdenTrabajoController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('MinsalsifdaBundle:SifdaOrdenTrabajo')->findAll();
-
+        $entities = $em->getRepository('MinsalsifdaBundle:SifdaOrdenTrabajo')->findBy(array(),
+                                                                                       array(
+                                                                                'fechaCreacion' =>  'DESC'
+                                                                               ));
         return array(
             'entities' => $entities,
         );
@@ -87,15 +89,31 @@ class SifdaOrdenTrabajoController extends Controller
         }
         $entity->setIdDependenciaEstablecimiento($idDependenciaEstablecimiento);
         
+        $idEstado = $em->getRepository('MinsalsifdaBundle:CatalogoDetalle')->findOneBy(array(
+                                                            'descripcion'=>'Asignado'
+                                                            ));
+        
+        
         //Generar el codigo que se le asignara a la orden de trabajo
         $codigo = $this->generarCodigoOrden($idDependenciaEstablecimiento);
         $entity->setCodigo($codigo);
         
         if ($form->isValid()) {
+            $entity->setFechaCreacion(new \DateTime("now"));
+            $entity->setIdEstado($idEstado);
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
-
+            
+            $estado = $idSolicitudServicio->getIdEstado()->getId();
+            if($estado==1)
+            {
+                $objEstado = $em->getRepository('MinsalsifdaBundle:CatalogoDetalle')->find(2);
+                $idSolicitudServicio->setIdEstado($objEstado);
+                $em->merge($idSolicitudServicio);
+                $em->flush();
+            }   
+            
             return $this->redirect($this->generateUrl('sifda_ordentrabajo_gestion'));
         }
 
@@ -199,12 +217,20 @@ class SifdaOrdenTrabajoController extends Controller
         }
 
         $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
+        $editForm->get('establecimiento')->setData($entity
+                                                    ->getIdDependenciaEstablecimiento()
+                                                    ->getIdEstablecimiento()
+                                                   );
+        $editForm->get('dependencia')->setData($entity
+                                                ->getIdDependenciaEstablecimiento()
+                                                ->getIdDependencia()
+                                               );
+        //$deleteForm = $this->createDeleteForm($id);
 
         return array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            //'delete_form' => $deleteForm->createView(),
         );
     }
 
@@ -246,11 +272,25 @@ class SifdaOrdenTrabajoController extends Controller
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
-
+        
+        //Obtener la dependencia y establecimiento de la orden de trabajo
+        $establecimiento = $editForm->get('establecimiento')->getData();
+        $dependencia = $editForm->get('dependencia')->getData();
+        $idDependenciaEstablecimiento = $em->getRepository('MinsalsifdaBundle:CtlDependenciaEstablecimiento')->findOneBy(array(
+                                                           'idEstablecimiento' => $establecimiento,
+                                                           'idDependencia' => $dependencia         
+                                                            ));
+        
+        if (!$idDependenciaEstablecimiento) {
+            throw $this->createNotFoundException('Unable to find CtlDependenciaEstablecimiento entity.');
+        }
+        $entity->setIdDependenciaEstablecimiento($idDependenciaEstablecimiento);
+        
+        
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('sifda_ordentrabajo_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('sifda_ordentrabajo_gestion'));
         }
 
         return array(

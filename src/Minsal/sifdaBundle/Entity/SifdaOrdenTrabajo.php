@@ -107,7 +107,28 @@ class SifdaOrdenTrabajo
      */
     private $idSolicitudServicio;
 
+    /**
+    * @ORM\OneToMany(targetEntity="SifdaEquipoTrabajo", mappedBy="idOrdenTrabajo")
+    */
+    private $equiposTrabajo;
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->equiposTrabajo = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    public function getEquiposTrabajo()
+    {
+        return $this->equiposTrabajo;
+    }
+
+    public function setEquiposTrabajo(\Doctrine\Common\Collections\ArrayCollection $equiposTrabajo)
+    {
+        $this->etapas = $equiposTrabajo;
+    }
 
     /**
      * Get id

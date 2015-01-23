@@ -17,12 +17,6 @@ class SifdaOrdenTrabajoType extends AbstractType
     {
         $builder
             ->add('descripcion')
-            ->add('fechaCreacion','date',array(
-                  'input'  =>  'datetime',
-                  'widget' =>  'single_text',
-                  'format' =>  'yy-MM-dd',
-                  'attr'   =>  array('class'=>'date')
-            ))
             ->add('fechaFinalizacion','date',array(
                   'input'  =>  'datetime',
                   'widget' =>  'single_text',
@@ -38,15 +32,6 @@ class SifdaOrdenTrabajoType extends AbstractType
                 return $repositorio
                         ->createQueryBuilder('dcat')
                         ->where('dcat.idCatalogo = 3');
-            }))
-            ->add('idEstado', 'entity', array(
-                    'required'      =>  true,
-                    'label'         =>  'Estado',
-                    'class'         =>  'MinsalsifdaBundle:CatalogoDetalle',
-                    'query_builder' =>  function(EntityRepository $repositorio) {
-                return $repositorio
-                        ->createQueryBuilder('dcat')
-                        ->where('dcat.idCatalogo = 2');
             }))
             ->add('dependencia', 'entity', array(
                     'label'         =>  'Dependencia',

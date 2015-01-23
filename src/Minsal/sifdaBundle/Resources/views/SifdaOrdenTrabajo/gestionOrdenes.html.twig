@@ -33,11 +33,11 @@
         <thead>
             <tr>
                 <th><center>Correlativo</center></th>
-                <th><center>Descripcion</center></th>
                 <th><center>Codigo</center></th>
-                <th><center>Fecha de creacion</center></th>
-                <th><center>Fecha de finalizacion</center></th>
+                <th><center>Descripcion</center></th>
                 <th><center>Observacion</center></th>
+                <th><center>Fecha de creacion</center></th>
+                {#<th><center>Responsable</center></th>#}
                 <th><center>Acciones</center></th>
             </tr>
         </thead>
@@ -46,21 +46,22 @@
         {% for entity in entities %}
             <tr>
                 <td><center>{{ corr }}</center></td>
-                <td>{{ entity.descripcion }}</td>
                 <td>{{ entity.codigo }}</td>
-                <td><center>{% if entity.fechaCreacion %}{{ entity.fechaCreacion|date('d/m/Y') }}{% endif %}</center></td>
-                <td><center>{% if entity.fechaFinalizacion %}{{ entity.fechaFinalizacion|date('d/m/Y') }}{% endif %}</center></td>
+                <td>{{ entity.descripcion }}</td>
                 <td>{{ entity.observacion }}</td>
+                <td><center>{% if entity.fechaCreacion %}{{ entity.fechaCreacion|date('d/m/Y') }}{% endif %}</center></td>
+                {#<td>{{ entity.observacion }}</td>#}
                 <td>
                 <ul>
                     <li>
                        <a href="{{ path('sifda_ordentrabajo_edit', { 'id': entity.id }) }}">Modificar orden de trabajo</a>
                     </li>
+                     
                     <li>
                         <a href="{{ path('sifda_equipotrabajo_new', { 'id': entity.id }) }}">Asignar equipo de trabajo</a>
                     </li>
                     <li>
-                        <a href="{{ path('sifda_ordentrabajo_show', { 'id': entity.id }) }}">Mostrar equipo de trabajo</a>
+                        <a href="{{ path('sifda_equipotrabajo_show', { 'id': entity.id }) }}">Mostrar equipo de trabajo</a>
                     </li>
                     <li>
                         <a href="{{ path('sifdainformeordentrabajo', { 'idOrd': entity.id }) }}">listar Informes</a>

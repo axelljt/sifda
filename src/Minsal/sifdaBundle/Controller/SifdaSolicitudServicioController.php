@@ -64,15 +64,28 @@ class SifdaSolicitudServicioController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $objEstado = $em->getRepository('MinsalsifdaBundle:CatalogoDetalle')->find(1);
-        $entities = $em->getRepository('MinsalsifdaBundle:SifdaSolicitudServicio')->findBy(array(
-                                                                                    'idEstado' => $objEstado
-                                                                                ));
+        $objEstado1 = $em->getRepository('MinsalsifdaBundle:CatalogoDetalle')->find(1);
+        $ingresados = $em->getRepository('MinsalsifdaBundle:SifdaSolicitudServicio')->findBy(array(
+                                                                                    'idEstado' => $objEstado1
+                                                                                ),
+                                                                                   array('fechaRecepcion' => 'DESC')
+                                                                                );
+        
+        $objEstado2 = $em->getRepository('MinsalsifdaBundle:CatalogoDetalle')->find(3);
+        $rechazados = $em->getRepository('MinsalsifdaBundle:SifdaSolicitudServicio')->findBy(array(
+                                                                                    'idEstado' => $objEstado2
+                                                                                ),
+                                                                                    array('fechaRecepcion' => 'DESC')
+                                                                                );
 
         return array(
-            'entities' => $entities,
+            'entities' => $ingresados,
+            'rechazados'=>$rechazados,
         );
     }
+    
+    
+    
     
     /**
     * Ajax utilizado para buscar rango de fechas
@@ -93,6 +106,51 @@ class SifdaSolicitudServicioController extends Controller
         }else
             {   return new Response('0');   }       
     }    
+    
+    
+    /**
+    * Ajax utilizado para buscar rango de fechas
+    *  
+    * @Route("/buscarSolicitudesIngresadas", name="sifda_solicitudservicio_buscar_solicitudes_ingresadas")
+    */
+    public function buscarSolicitudesIngresadasAction()
+    {
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+        if($isAjax){
+             $fechaInicio = $this->get('request')->request->get('fechaInicio');
+             $fechaFin = $this->get('request')->request->get('fechaFin');
+             $em = $this->getDoctrine()->getManager();
+             $solicitudes = $em->getRepository('MinsalsifdaBundle:SifdaSolicitudServicio')->FechaSolicitudIngresada($fechaInicio, $fechaFin);
+             $mensaje = $this->renderView('MinsalsifdaBundle:SifdaSolicitudServicio:solicitudesIngShow.html.twig' , array('solicitudes' =>$solicitudes));
+             $response = new JsonResponse();
+             return $response->setData($mensaje);
+        }else
+            {   return new Response('0');   }       
+    }   
+    
+     /**
+    * Ajax utilizado para buscar rango de fechas
+    *  
+    * @Route("/buscarSolicitudes2", name="sifda_solicitudservicio_buscar2_solicitudes")
+    */
+    public function buscarSolicitudesRechazadasAction()
+    {
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+        if($isAjax){
+             $fechaInicio = $this->get('request')->request->get('fechaInicio');
+             $fechaFin = $this->get('request')->request->get('fechaFin');
+             $em = $this->getDoctrine()->getManager();
+             $solicitudes = $em->getRepository('MinsalsifdaBundle:SifdaSolicitudServicio')->FechaSolicitudRechazadas($fechaInicio, $fechaFin);
+             $mensaje = $this->renderView('MinsalsifdaBundle:SifdaSolicitudServicio:solicitudesRechShow.html.twig' , array('solicitudes' =>$solicitudes));
+             $response = new JsonResponse();
+             return $response->setData($mensaje);
+        }else
+            {   return new Response('0');   }       
+    }    
+    
+    
+    
+    
     
     
     /**
@@ -462,7 +520,6 @@ class SifdaSolicitudServicioController extends Controller
             
             $id = $this->get('request')->request->get('id');
         
-            ladybug_dump($id);
         $res=0;
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('MinsalsifdaBundle:SifdaSolicitudServicio')->find($id);

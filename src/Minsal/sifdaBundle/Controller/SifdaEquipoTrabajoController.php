@@ -131,18 +131,29 @@ class SifdaEquipoTrabajoController extends Controller
     public function showAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('MinsalsifdaBundle:SifdaEquipoTrabajo')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find SifdaEquipoTrabajo entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
+        $ordenTrabajo = $em->getRepository('MinsalsifdaBundle:SifdaOrdenTrabajo')->find($id);
+        $responsable = $em->getRepository('MinsalsifdaBundle:SifdaEquipoTrabajo')->findOneBy(array(
+                                                                            'idOrdenTrabajo' => $ordenTrabajo,
+                                                                            'responsableEquipo' => 'TRUE'
+                                                                                ));
+        /*if (!$responsable) {
+            throw $this->createNotFoundException(
+                                'No se ha encontrado equipo de trabajo asignado a la orden'
+                                );
+        }*/
+        
+        $personal = $em->getRepository('MinsalsifdaBundle:SifdaEquipoTrabajo')->findBy(array(
+                                                                            'idOrdenTrabajo' => $ordenTrabajo,
+                                                                            'responsableEquipo' => 'FALSE'
+                                                                                ));
+        
+        //$deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
+            'entity'       => $responsable,
+            'personal'     => $personal,
+            'ordenTrabajo' => $ordenTrabajo,
+        //    'delete_form'  => $deleteForm->createView(),
         );
     }
 
