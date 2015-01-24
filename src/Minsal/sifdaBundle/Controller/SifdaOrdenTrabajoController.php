@@ -75,15 +75,17 @@ class SifdaOrdenTrabajoController extends Controller
         $entity->setIdSolicitudServicio($idSolicitudServicio);
         
         $form->handleRequest($request);
-        
-        //Obtener la dependencia y establecimiento de la orden de trabajo
-        $establecimiento = $form->get('establecimiento')->getData();
-        $dependencia = $form->get('dependencia')->getData();
+        $parameters = $request->request->all();
+        foreach($parameters as $p){
+            $idDependencia = $p['dependencia'];
+            $idEstablecimiento = $p['establecimiento'];
+        }
+
         $idDependenciaEstablecimiento = $em->getRepository('MinsalsifdaBundle:CtlDependenciaEstablecimiento')->findOneBy(array(
-                                                           'idEstablecimiento' => $establecimiento,
-                                                           'idDependencia' => $dependencia         
+                                                           'idEstablecimiento' => $idEstablecimiento,
+                                                           'idDependencia' => $idDependencia         
                                                             ));
-        
+
         if (!$idDependenciaEstablecimiento) {
             throw $this->createNotFoundException('Unable to find CtlDependenciaEstablecimiento entity.');
         }
@@ -97,8 +99,10 @@ class SifdaOrdenTrabajoController extends Controller
         //Generar el codigo que se le asignara a la orden de trabajo
         $codigo = $this->generarCodigoOrden($idDependenciaEstablecimiento);
         $entity->setCodigo($codigo);
+        $validator = $this->get('validator');
+        $errors = $validator->validate($entity);
         
-        if ($form->isValid()) {
+        if (count($errors)<=0) {
             $entity->setFechaCreacion(new \DateTime("now"));
             $entity->setIdEstado($idEstado);
             $em = $this->getDoctrine()->getManager();
@@ -118,8 +122,10 @@ class SifdaOrdenTrabajoController extends Controller
         }
 
         return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+            'entity'    => $entity,
+            'solicitud' => $idSolicitudServicio,
+            'form'      => $form->createView(),
+            'errors'    => $errors
         );
     }
 
@@ -170,9 +176,34 @@ class SifdaOrdenTrabajoController extends Controller
             'entity' => $entity,
             'solicitud' => $solicitud,
             'empleados' => $empleados,
-            'form'   => $form->createView(),
+            'form'      => $form->createView(),
+            'errors'    => null
         );
     }
+    
+            /**
+    * Ajax utilizado para buscar las dependencias segun su establecimiento
+    *  
+    * @Route("/find_dependencia", name="sifda_ordentrabajo_find_dependencia")
+    */
+    public function FindDependenciaAction()
+    {
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+        if($isAjax){
+             $idEstablecimiento = $this->get('request')->request->get('idEstablecimiento');
+             $em = $this->getDoctrine()->getManager();
+             $dependencia_establecimiento = $em->getRepository('MinsalsifdaBundle:CtlDependenciaEstablecimiento')->findBy(array('idEstablecimiento'=>$idEstablecimiento));
+             $var= array();
+             foreach($dependencia_establecimiento as $d)
+             {
+                 $dependencias[] = $d->getIdDependencia();
+             }
+             $mensaje = $this->renderView('MinsalsifdaBundle:CtlDependencia:dependenciasShow.html.twig' , array('dependencias' =>$dependencias));
+             $response = new JsonResponse();
+             return $response->setData($mensaje);
+        }else
+            {   return new Response('0');   }       
+    } 
 
     /**
      * Finds and displays a SifdaOrdenTrabajo entity.

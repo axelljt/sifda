@@ -1,5 +1,16 @@
 {% extends 'MinsalsifdaBundle::layoutResponsable.html.twig' %}
 
+{% block alert_step %}
+{% if errors is not null %}
+    {% include "MinsalsifdaBundle:Errors:errors.html.twig" with {'errors':errors} %}
+{% else %}
+    <div class="alert alert-info" id="alert_step">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <strong>Nota: </strong> Campos requeridos (*).
+    </div>    
+{% endif %}
+{% endblock %}
+
 {% block contenido_in -%}
     {{form_start(form)}}
     {{form_errors(form)}}     
@@ -39,10 +50,10 @@
                       
                 <div class="row-fluid">
                     <div class="span4 offset2">
-                        {{form_row(form.establecimiento, {'attr': {'class':'span7'} })}}
-                        {{form_row(form.dependencia, {'attr': {'class':'span7'} })}}
+                        {{form_row(form.establecimiento, {'attr': {'class':'span10'} })}}
+                        {{form_row(form.dependencia, {'attr': {'class':'span10'} })}}
                         {{form_row(form.descripcion, {'attr': {'class':'input-xlarge', 'placeholder': 'Descripcion de la orden de trabajo'} })}}
-                        {{form_row(form.fechaFinalizacion)}}
+                        {{form_row(form.fechaFinalizacion,{'attr': {'readonly':'yes'} })}}
                     </div>
                     <div class="span5 offset1"> 
                         {{form_row(form.idEtapa)}}
@@ -74,7 +85,24 @@
 {% block javascripts_step %}
     {{ parent() }}
     <script>
-   
+    $(document).ready(function(){
+        
+        $("#minsal_sifdabundle_sifdaordentrabajo_establecimiento").change(function(){
+            
+            var IdEstablecimiento = $("#minsal_sifdabundle_sifdaordentrabajo_establecimiento").val();
+            $.post(
+            '{{path('sifda_ordentrabajo_find_dependencia')}}', 
+              { 
+                idEstablecimiento:IdEstablecimiento
+              }
+              , function( data ) {
+                console.log( data );
+                    $("#minsal_sifdabundle_sifdaordentrabajo_dependencia").html(data);
+                
+             }, "json");
+        });
+    });    
+        
         $.datepicker.regional['es'] = {
 			 closeText: 'Cerrar',
 			 prevText: '<Ant',
