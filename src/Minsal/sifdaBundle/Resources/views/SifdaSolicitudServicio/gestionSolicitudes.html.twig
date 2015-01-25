@@ -7,58 +7,143 @@
     <div id="seleccion">
         <div class="row-fluid">
             <div class="span11 offset1">
-                <table style="margin-left:70px ">
-                <tr>
-                    <td style="height: 25px"><input type="radio" name="consulta" id="todos" value="todos" checked>Ingresadas<br></td>
-                    <td style="height: 25px">&nbsp;</td>
-                    <td style="height: 25px">&nbsp;</td>
-                    <td style="height: 25px">&nbsp;</td>
-                    <td style="height: 25px">&nbsp;</td>
-                    <td style="height: 25px">&nbsp;</td>
-                    <td style="height: 25px">&nbsp;</td>
-                    <td style="height: 25px">&nbsp;</td>
-                    <td style="height: 25px">&nbsp;</td>
-                    <td style="height: 25px">&nbsp;</td>
-                    <td><input type="radio" name="consulta" id="especifico" value="especifico"> Ingresadas Especifico</td>
-                    <td style="height: 25px">&nbsp;</td>
-                    <td style="height: 25px">&nbsp;</td>
-                    <td style="height: 25px">&nbsp;</td>
-                    <td style="height: 25px">&nbsp;</td>
-                    <td style="height: 25px">&nbsp;</td>
-                    <td style="height: 25px">&nbsp;</td>
-                    <td style="height: 25px">&nbsp;</td>
-                    <td style="height: 25px">&nbsp;</td>
-                    <td style="height: 25px">&nbsp;</td>
-                    <td><input type="radio" name="consulta" id="RechTodos" value="RechTodos" checked>Rechazadas</td>
-                    <td style="height: 25px">&nbsp;</td>
-                    <td style="height: 25px">&nbsp;</td>
-                    <td style="height: 25px">&nbsp;</td>
-                    <td style="height: 25px">&nbsp;</td>
-                    <td style="height: 25px">&nbsp;</td>
-                    <td style="height: 25px">&nbsp;</td>
-                    <td style="height: 25px">&nbsp;</td>
-                    <td style="height: 25px">&nbsp;</td>
-                    <td style="height: 25px">&nbsp;</td>
-                    <td><input type="radio" name="consulta" id="RechEsp" value="RechEspecifico"> Rechazadas Especifico</td>
-                </tr>
                 
-            </table>
-                <br>
-                <div>
-                    <table id="fechas" style="margin-left: 100px">
+                <div class="span3">  
+                
+                    <table>
+                        
                         <tr>
-                            <td><label>Fecha Inicio: </label></td><td><input type="text" id="fechaInicio" value=""></td>
-                            <td><label>Fecha Fin: </label></td><td><input type="text" id="fechaFin" value=""></td>
-                            <td><input type="submit" class="btn btn-primary" id="b1" value="Buscar" name="Buscar"></td>
-                        </tr>    
-                    </table>    
-                    <div id="rangoTabla"></div>
-                </div>  
+                            <td>
+                                <label>Estados:</label>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <select id="cmb1" name="ComboEstado"  class="btn dropdown-toggle" style="width: 150px">
+                                     {% for estado in estados%}
+                               
+                                        <option value="{{loop.index}}">{{estado.descripcion}}</option>
+                                     {% endfor %}   
+                                    </select>
+                               </div>
+                            </td>
+                            
+                        </tr>
+                                               
+                    </table>
+                
+                                        
+                                     
+                </div>
+                    
+                    
+              
+                
+                <div class="span2">
+                 <table>
+                            <tr>
+                                <td>
+                                <input type="radio" name="consulta" id="Todos" value="Todos">Todos</td>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                <input type="radio" name="consulta" id="especifico" value="especifico">Especifico
+                                </td>
+                                
+                                
+                            </tr>   
+                 </table>
+                </div>
+                
+                <div class="span7">
+                    <div id="btn1">
+                        <input type="submit" class="btn btn-primary" id="bbuscar" value="Buscar" name="Buscar">
+                    </div>
+                
+                  <table id="fechas">
+                      <tr>
+                        <td><label>Fecha Inicio: </label></td><td><input type="text" id="fechaInicio" value=""></td>
+                     </tr>
+                     <tr>
+                        <td><label>Fecha Fin: </label></td><td><input type="text" id="fechaFin" value=""></td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td><input type="submit" class="btn btn-primary" id="bbuscar2" value="Buscar" name="Buscar"></td>
+                     </tr>    
+                 
+                  </table>        
+                    
+                                   
+                </div>
+                  <div id="seleccion">
+                                         
+                                    
+                {#<table>
+                <tr>#}
+                    {#<td>
+                        <div class="btn-group">
+                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                        Estado
+                        <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% for estado in estados%}#}
+                            {#<li><a href="{{ path('sifda_solicitudservicio_show_estados_combo', { 'id': estado.id }) }}">{{estado.descripcion}}</a></li>#}
+                           {# <li><a href="">{{estado.descripcion}}</a></li>
+                            {% endfor %}
+                        </ul>
+                        
+                           
+                            
+                        
+                    </div>
+                    </td>  #}  
+                   {# <td>
+                        <label style="align:right">Estados:</label>
+                    </td>   
+                    <td>
+                        
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                        
+                    <td></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    
+                    <td>
+                       
+                                    
+                                </td>
+                            </tr>
+                        </table>#}
+                        
+                    {#</td>#}
+                    
+                    {#<td style="height: 25px"><input type="radio" name="consulta" id="todos" value="todos" checked>Ingresadas<br></td>
+                   
+                    <td><input type="radio" name="consulta" id="especifico" value="especifico"> Ingresadas Especifico</td>
+                    
+                    <td><input type="radio" name="consulta" id="RechTodos" value="RechTodos" checked>Rechazadas</td>
+                    
+                    <td><input type="radio" name="consulta" id="RechEsp" value="RechEspecifico"> Rechazadas Especifico</td>#}
+                    
+                   {# <td><input type="radio" name="consulta" id="AsigTodos" value="AsigTodos" checked>Asignadas</td>
+                    
+                    <td><input type="radio" name="consulta" id="ProcTodos" value="ProcTodos" checked>En Proceso</td>
+                    
+                    <td><input type="radio" name="consulta" id="FinTodos" value="FinTodos" checked>Finalizadas</td>#}
+                
+                {#</tr>#}
+                {#<div id="rangoTabla"></div>#}
+            {#</table>#}
+               <br>
+                 
                 
                 
                  {#Cosntruyendo Filtro para Rechazados#}
                 
-                <div>
+               {# <div>
                     <table id="Rechfechas" style="margin-left: 100px">
                         <tr>
                             <td><label>Fecha Inicio: </label></td><td><input type="text" id="Rech_fechaInicio" value=""></td>
@@ -67,12 +152,28 @@
                         </tr>    
                     </table>    
                     <div id="rangoRechTabla"></div>
-                </div>
+                </div>#}
                 
             </div>
         </div>    
     </div>
-        
+  </div> 
+  <div class="row-fluid">
+            <div class="span12">
+            
+                {% if entities%}
+                <div id="rangoTabla"></div>
+                {% endif %}
+                {% if asignados%}
+                <div id="rangoAsigTabla"></div>
+                {% endif %}
+                {% if rechazados%}
+                <div id="rangoRechTabla"></div>
+                {% endif %}
+               
+            </div>
+            
+   </div>              
     <div id="dialog">
         
     </div>
@@ -108,7 +209,7 @@
                         
                     </li>
                     <li>                        
-                        <a  href="{{ path('sifda_solicitudservicio_delete2', { 'id': entity.id }) }} ">Reprogramar solicitud de servicio</a>    
+                        <a  href="{{ path('sifda_reprogramacion_servicio_new', { 'id': entity.id }) }} ">Reprogramar solicitud de servicio</a>
                     </li>
                     
                   </ul>
@@ -123,6 +224,49 @@
         </div>
         
     {% endif %}    
+    
+    {#Cosntruyendo Tabla para Asiganados#} 
+    {% if asignados %}
+            
+        <table id="AsigTabla" class="table table-bordered table-hover table-condensed">
+        <thead>
+            <tr>
+                <th>N°</th>
+                <th>Descripcion</th>
+                <th>Fecha de recepcion</th>
+                <th>Fecha que requiere</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for asignado in asignados %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ asignado.descripcion }}</td>
+                <td>{% if asignado.fechaRecepcion %}{{ asignado.fechaRecepcion|date('d-m-Y H:i:s') }}{% endif %}</td>
+                <td>{% if asignado.fechaRequiere %}{{ asignado.fechaRequiere|date('d-m-Y') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>                        
+                            <a href="{{ path('sifda_equipotrabajo_show', { 'id': asignado.id }) }}">Mostrar equipo de trabajo</a>
+                            <input type="hidden" id="txt_{{ loop.index }}"  value="{{asignado.id}}">
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        
+    {% else %}
+        <div id="msgAsignados">
+            <center><h4>No se encontraron solicitudes Asignadas</h4></center>
+        </div>
+    {% endif %}
+      
+    
+    
+    
         {#Cosntruyendo Tabla para Rechazados#} 
         
         {#<input type="hidden" id="LenRech"  value="{{rechazados.length()}}">#}
@@ -145,21 +289,13 @@
                 <td>{{ rechazado.descripcion }}</td>
                 <td>{% if rechazado.fechaRecepcion %}{{ rechazado.fechaRecepcion|date('d-m-Y H:i:s') }}{% endif %}</td>
                 <td>{% if rechazado.fechaRequiere %}{{ rechazado.fechaRequiere|date('d-m-Y') }}{% endif %}</td>
-                
                 <td>
-                <ul>
-                    
-                    <li>                        
-                        {#<a  href="{{ path('sifda_solicitudservicio_rechazar', { 'id': entity.id }) }} javascript:confirmar();">Rechazar solicitud de servicio</a>#}
-                        {#<a  href="javascript:confirmar({{ loop.index }});">Rechazar solicitud de servicio</a>#}
-                        
-                            
-                        <a  href="javascript:ShowDialog({{ loop.index }});">Aceptar solicitud de servicio</a>
-                        <input type="hidden" id="txt{{ loop.index }}"  value="{{rechazado.id}}">
-                        
-                    </li>
-                                       
-                  </ul>
+                    <ul>
+                        <li>                        
+                            <a  href="javascript:ShowDialog2({{ loop.index }});">Aceptar solicitud de servicio</a>
+                            <input type="hidden" id="txt_{{ loop.index }}"  value="{{rechazado.id}}">
+                        </li>
+                    </ul>
                 </td>
             </tr>
         {% endfor %}
@@ -173,6 +309,11 @@
     {% endif %}     
   {#Fin Tabla para Rechazados#}
         
+  
+    
+   
+  
+  
         <div id="dialogConfirm">
             <span id="spanMessage"></span>
 
@@ -186,92 +327,165 @@
     <script>
     $(document).ready(function(){
 
-
+        {#Condiciones Iniciales de la Pantalla#}
         
-        $('#msgIngresados').hide("slow");
-        $('#msgRechazados').hide("slow");
+       document.getElementById('cmb1').value=1; 
+       document.getElementById('Todos').checked=true;
+       $('#fechas').hide("slow");
+       $('#AsigTabla').hide("slow");
+       $('#RechTabla').hide("slow"); 
+    
+       $('#msgIngresados').hide("slow"); 
+       $('#msgAsignados').hide("slow");
+       $('#msgRechazados').hide("slow");   
         
-        document.getElementById('todos').checked=true;
-        $('#fechas').hide("slow");
-        $('#RechTabla').hide("slow");
-        
-        
-        $('#todos').click(function(){
-            $('#fechas').hide("slow");
-            $('#tabla').show("slow");
-            $('#rangoTabla').hide("slow");
-            $('#rangoRechTabla').hide("slow");
-            $('#RechTabla').hide("slow");
-            $('#msgIngresados').show("slow");
-            $('#msgRechazados').hide("slow");
-            
-        });
-        
-        $('#especifico').click(function(){ 
-        $('#fechas').show("slow");    
-        $('#tabla').hide("slow");
-        $('#Rechfechas').hide("slow");
-        $('#msgRechazados').hide("slow");
-        LimpiarCamposFecha();
-        
-        });
-        
-        /*Para segunda Busqueda*/
-        
-        $('#Rechfechas').hide("slow");
-     
-        $('#RechTodos').click(function(){
-            $('#fechas').hide("slow");
-            $('#tabla').hide("slow");
-            $('#rangoTabla').hide("slow");
-            $('#RechTabla').show("slow");
-            $('#rangoRechTabla').hide("slow");
-            $('#msgIngresados').hide("slow");
-            $('#msgRechazados').show("slow");
-            
-        });
-        
-        $('#RechEsp').click(function(){ 
-        $('#fechas').hide("slow");    
-        $('#tabla').hide("slow");  
-        $('#rangoTabla').hide("slow");
-        $('#Rechfechas').show("slow");
-        $('#RechTabla').hide("slow");
-        $('#msgIngresados').hide("slow");
-        $('#msgRechazados').hide("slow");
-        LimpiarCamposFecha();
-        
-        });
+       {#Fin de Condiciones Iniciales#} 
        
-        
-        
-        $("#b1").click(function(){
-           
-            var fi = $("#fechaInicio").val();
-            var ff = $("#fechaFin").val();
-            $.post(
-            '{{path('sifda_solicitudservicio_buscar_solicitudes_ingresadas')}}', 
-              { 
-                fechaInicio:$("#fechaInicio").val(),
-                fechaFin   :$("#fechaFin").val()
+       {#Comportamiento Radio Buttons#}
+    
+        $('#Todos').click(function(){
+            
+            $("#btn1").show("slow");
+            $("#fechas").hide("slow");
+            $('#tabla').show("slow");
+          });
+          
+        $('#especifico').click(function(){
+            
+            $("#btn1").hide("slow");
+            $("#fechas").show("slow");
+            $("#tabla").hide("slow");
+            $('#msgIngresados').hide("slow");
+            $('#msgRechazados').hide("slow");
+            $('#msgAsignados').hide("slow");
+          });   
+          
+          {#Comportamiento Boton Buscar1#}
+          
+          $('#bbuscar').click(function(){
+              
+              var Combo = $("#cmb1").val();
+              var ck = $("#Todos").val();
+              
+              if(Combo==='1' && ck==='Todos'){
+                   $('#fechas').hide("slow");
+                   $('#tabla').show("slow");
+                   $('#rangoTabla').hide("slow");
+                   $('#msgIngresados').show("slow");
+                   $('#AsigTabla').hide("slow");
+                   $('#rangoAsigTabla').hide("slow");
+                   $('#msgAsignados').hide("slow");
+                   $('#RechTabla').hide("slow");
+                   $('#rangoRechTabla').hide("slow");
+                   $('#msgRechazados').hide("slow");
               }
-              , function( data ) {
-                console.log( data );
-                    $("#rangoTabla").html(data);
-                
-             }, "json");
+              
+              if(Combo==='2' && ck==='Todos'){
+                   $('#fechas').hide("slow");
+                   $('#tabla').hide("slow");
+                   $('#rangoTabla').hide("slow");
+                   $('#msgIngresados').hide("slow");
+                   $('#AsigTabla').show("slow");
+                   $('#rangoAsigTabla').hide("slow");
+                   $('#msgAsignados').show("slow");
+                   $('#RechTabla').hide("slow");
+                   $('#rangoRechTabla').hide("slow");
+                   $('#msgRechazados').hide("slow");
+              }
+              
+              if(Combo==='3' && ck==='Todos'){
+                   $('#fechas').hide("slow");
+                   $('#tabla').hide("slow");
+                   $('#rangoTabla').hide("slow");
+                   $('#msgIngresados').hide("slow");
+                   $('#AsigTabla').hide("slow");
+                   $('#rangoAsigTabla').hide("slow");
+                   $('#msgAsignados').hide("slow");
+                   $('#RechTabla').show("slow");
+                   $('#rangoRechTabla').hide("slow");
+                   $('#msgRechazados').show("slow");
+                  
+              }
+          });  
+
+        {#Comportamiento Boton Buscar2#}
             
-            $('#msgIngresados').show("slow");
-        });
-        
-        
-            
-            $("#b2").click(function() {
-                $.post(
-                    '{{path('sifda_solicitudservicio_buscar2_solicitudes')}}', 
+         $('#bbuscar2').click(function(){
+             
+             var Combo = $("#cmb1").val();
+             var ck = $("#especifico").val();
+             
+              if(Combo==='1' && ck==='especifico'){
+                  
+                   $('#tabla').hide("slow");
+                   $('#AsigTabla').hide("slow");
+                   $('#RechTabla').hide("slow");
+                   $('#rangoTabla').show("slow");
+                   $('#rangoAsigTabla').hide("slow");
+                   $('#rangoRechTabla').hide("slow");
+                   $('#msgAsignados').hide("slow");
+                   $('#msgRechazados').hide("slow");
+                   
+                   $.post(
+                    '{{path('sifda_solicitudservicio_buscar_solicitudes_ingresadas')}}',     
+                    {#'{{path('sifda_solicitudservicio_buscar2_solicitudes')}}', #}
                     { 
-                      fechaInicio:$("#Rech_fechaInicio").val(),
-                      fechaFin   :$("#Rech_fechaFin").val()
+                      fechaInicio:$("#fechaInicio").val(),
+                      fechaFin   :$("#fechaFin").val()
+                    }
+                        , function( data ) {
+                           console.log( data );
+                         $("#rangoTabla").html(data);
+                
+                    }, "json");
+            
+                    $('#msgIngresados').show("slow");
+              }
+              
+              if(Combo==='2' && ck==='especifico'){
+                  
+                  $('#tabla').hide("slow");
+                  $('#AsigTabla').hide("slow");
+                  $('#RechTabla').hide("slow");
+                  $('#rangoTabla').hide("slow");
+                  $('#rangoAsigTabla').show("slow");
+                  $('#rangoRechTabla').hide("slow");
+                  $('#msgIngresados').hide("slow");
+                  $('#msgRechazados').hide("slow");
+                  
+                   $.post(
+                    '{{path('sifda_solicitudservicio_buscar3_solicitudes')}}',
+                    { 
+                      fechaInicio:$("#fechaInicio").val(),
+                      fechaFin   :$("#fechaFin").val()
+                    }
+                        , function( data ) {
+                           console.log( data );
+                         $("#rangoAsigTabla").html(data);
+                
+                    }, "json");
+            
+                    $('#msgAsignados').show("slow");
+                  
+              }
+              
+              if(Combo==='3' && ck==='especifico'){
+               
+                  $('#tabla').hide("slow");
+                  $('#AsigTabla').hide("slow");
+                  $('#RechTabla').hide("slow");
+                  $('#rangoTabla').hide("slow");
+                  $('#rangoAsigTabla').hide("slow");
+                  $('#rangoRechTabla').show("slow");
+                  $('#msgIngresados').hide("slow");
+                  $('#msgAsignados').hide("slow");
+                  
+                  
+                   $.post(
+                    '{{path('sifda_solicitudservicio_buscar2_solicitudes')}}',
+                    { 
+                      fechaInicio:$("#fechaInicio").val(),
+                      fechaFin   :$("#fechaFin").val()
                     }
                         , function( data ) {
                            console.log( data );
@@ -280,11 +494,11 @@
                     }, "json");
             
                     $('#msgRechazados').show("slow");
-            });
-            
-        
-    });
-    
+              }
+        });   
+          
+}); {#Fin Jquery#}       
+          
     
     
     $.datepicker.regional['es'] = {
@@ -326,13 +540,6 @@
 					);
                                 
                                 $( "#fechaFin" ).datepicker(
-					
-					);
-                                $( "#Rech_fechaInicio" ).datepicker(
-					
-					);
-                                
-                                $( "#Rech_fechaFin" ).datepicker(
 					
 					);
                                 
@@ -380,7 +587,7 @@
         $.post(
             url,
             {
-                id:valor,
+                id:valor
             }).done(function(){
                 {#alert("Solicitud Rechazada Exitosamente");#}
                  window.location='{{path('sifda_gestionSolicitudes')}}';   
@@ -389,6 +596,21 @@
             });
     }
     
+    function aceptarSolicitud(url,valor2)
+    {
+        {#alert(valor2);
+        alert($("#txt_"+valor2).val());#}
+       
+        $.post(
+            url,
+            {
+                id:valor2    
+            }).done(function(){
+                 window.location='{{path('sifda_gestionSolicitudes')}}';   
+                ('#dialog').attr('title','Confirmacion').text('La solicitud ha sido aceptada correctamente').dialog();               
+                
+            });
+    }    
     
     /*Codigo para nueva ventana*/
   function ShowDialog(valor) {
@@ -418,14 +640,38 @@
         });
     }
     
+    /*Codigo para aceptar la solicitud que ha sido rechazada*/
+    function ShowDialog2(valor2) {
+    
+    alert(valor2);
+    alert($("#txt_"+valor2).val());
+    
+        $('#spanMessage').html('¿Está seguro(a) de aceptar la solicitud?');
+        $("#dialogConfirm").dialog({
+            resizable: false,
+            height: 160,
+            width: 300,
+            modal: true,
+            title: 'Confirmacion',
+            buttons: {
+                'Aceptar': function () {
+                    aceptarSolicitud('{{path('sifda_solicitudservicio_aceptar')}}',$("#txt_"+valor2).val());
+                    $(this).dialog("close");
+                },
+                    'Cancelar': function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    }
     /*Fin del codigo de ventana*/
+   
    
    function LimpiarCamposFecha(){
             
         document.getElementById('fechaInicio').value="";
         document.getElementById('fechaFin').value="";
-        document.getElementById('Rech_fechaInicio').value="";
-        document.getElementById('Rech_fechaFin').value="";
+        
     }
     
     </script>

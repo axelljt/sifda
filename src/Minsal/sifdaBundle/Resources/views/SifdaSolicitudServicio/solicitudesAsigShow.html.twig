@@ -19,7 +19,7 @@
                     <td>{{s.fechaRecepcion|date('d-m-Y H:i:s')}}</td>
                     <td>{{s.fechaRequiere|date('d-m-Y')}}</td>
                     
-                    <td><a href="{{ path('sifda_solicitudservicio_buscar_estado', { 'id': s.id }) }}">Aceptar Solicitud</a> </td>
+                    <td><a href="{{ path('sifda_equipotrabajo_show', { 'id': entity.id }) }}">Mostrar equipo de trabajo</a> </td>
                 </tr>
                    {%endfor%}
             </tbody>

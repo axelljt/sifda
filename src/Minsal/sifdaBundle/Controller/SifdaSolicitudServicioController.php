@@ -77,10 +77,23 @@ class SifdaSolicitudServicioController extends Controller
                                                                                 ),
                                                                                     array('fechaRecepcion' => 'DESC')
                                                                                 );
-
+       
+        $objEstado3 = $em->getRepository('MinsalsifdaBundle:CatalogoDetalle')->find(2);
+        $asignados = $em->getRepository('MinsalsifdaBundle:SifdaSolicitudServicio')->findBy(array(
+                                                                                    'idEstado' => $objEstado3
+                                                                                ),
+                                                                                    array('fechaRecepcion' => 'DESC')
+                                                                                );
+        $obCatalogo = $em->getRepository('MinsalsifdaBundle:Catalogo')->find(2);
+        $Estados= $em->getRepository('MinsalsifdaBundle:CatalogoDetalle')->findBy(array(
+            'idCatalogo'=> $obCatalogo
+        ));
+        
         return array(
             'entities' => $ingresados,
             'rechazados'=>$rechazados,
+            'asignados'=>$asignados,
+            'estados'=> $Estados,
         );
     }
     
@@ -149,8 +162,26 @@ class SifdaSolicitudServicioController extends Controller
     }    
     
     
-    
-    
+       /**
+    * Ajax utilizado para buscar rango de fechas
+    *  
+    * @Route("/buscarSolicitudes3", name="sifda_solicitudservicio_buscar3_solicitudes")
+    */
+    public function buscarSolicitudesAsignadasAction()
+    {
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+        if($isAjax){
+             $fechaInicio = $this->get('request')->request->get('fechaInicio');
+             $fechaFin = $this->get('request')->request->get('fechaFin');
+             $em = $this->getDoctrine()->getManager();
+             $solicitudes = $em->getRepository('MinsalsifdaBundle:SifdaSolicitudServicio')->FechaSolicitudAsignadas($fechaInicio, $fechaFin);
+             $mensaje = $this->renderView('MinsalsifdaBundle:SifdaSolicitudServicio:solicitudesAsigShow.html.twig' , array('solicitudes' =>$solicitudes));
+             $response = new JsonResponse();
+             return $response->setData($mensaje);
+        }else
+            {   return new Response('0');   }       
+    }    
+       
     
     
     /**
@@ -255,6 +286,11 @@ class SifdaSolicitudServicioController extends Controller
         );
     }
     
+    /* Controlador con ComboBox */
+    
+    
+    
+    /*Fin de Controlador con ComboBox*/
     
     /**
      * Controlador para la busqueda de Estados.
@@ -513,7 +549,7 @@ class SifdaSolicitudServicioController extends Controller
     */
     
     
-    public function rechazaraction(){
+    public function rechazarAction(){
         
         $isAjax = $this->get('Request')->isXMLhttpRequest();
         if($isAjax){
@@ -559,7 +595,48 @@ class SifdaSolicitudServicioController extends Controller
             
     } 
     
+        /**
+    * Ajax utilizado para cambiar el estado de la solicitud de servicio
+    *  
+    * @Route("/sifda/aceptar", name="sifda_solicitudservicio_aceptar")
+    */
     
+    
+    public function aceptarSolicitudAction(){
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+        if($isAjax){
+            
+        $id = $this->get('request')->request->get('id');
+        //ladybug_dump($id);
+        $em = $this->getDoctrine()->getManager();
+        $rechazados = $em->getRepository('MinsalsifdaBundle:SifdaSolicitudServicio')->find($id);
+        
+        if (!$rechazados) {
+                throw $this->createNotFoundException('No encontre la Entidad.');
+            }
+            $estado=$rechazados->getIdEstado()->getId();
+            if($estado==3)
+            {
+                $objEstado = $em->getRepository('MinsalsifdaBundle:CatalogoDetalle')->find(1);   
+                if (!$objEstado) {
+                    throw $this->createNotFoundException('No encontre el Estado.');
+                }
+                
+                $rechazados->setIdEstado($objEstado);
+                $em->merge($rechazados);
+                $em->flush();                    
+                return new Response('1');  
+            }     
+            //else 
+           //  {
+             //   $res=$estado;
+//                return $this->render('MinsalsifdaBundle:SifdaSolicitudServicio:rechazarSolicitudes.html.twig' , array('entity' =>$entity,'val'=>$res));
+//                return new Response('0');
+             //} 
+//                throw $this->createNotFoundException('No pude rechazar la solicitud.');
+        }    
+            
+    } 
     
     
 
